@@ -1,10 +1,6 @@
 ---
 - when: ansible_distribution == 'MacOSX'  # ONLY run on MacOS
   block:
-    - name: Display config
-      debug:
-        var: dmg
-
     - name: Check {{dmg.name}} file
       stat: path=/Applications/{{dmg.name}}.app
       register: motrix_check

@@ -45,6 +45,7 @@ notes:
 todo:
     - support checksum.
     - force install even app already installed.
+    - url support rsync
 '''
 
 EXAMPLES = r'''
@@ -75,11 +76,16 @@ EXAMPLES = r'''
 '''
 
 RETURN = r'''
-no_value_returned:
-    description: The original name param that was passed in.
+source:
+    description: The actual dmg file used to install application
     type: str
     returned: always
-    sample: 'hello world'
+    sample: '~/Downloads/Motrix.dmg'
+use:
+    description: The dmg source attribute actually used
+    type: str
+    returned: always
+    sample: 'path' or 'url'
 '''
 
 import datetime
@@ -228,10 +234,10 @@ def main():
         # reference https://github.com/ansible/ansible/blob/652a74e0872fa3127c6df12e9ac1cbe0893d0793/lib/ansible/modules/get_url.py#L390
         with fetch_file(module, url) as (fd, tempname):
             install(module, name, tempname, install_path)
-            module.exit_json(changed=True, msg="Application installed: %s" % name, source=url)
+            module.exit_json(changed=True, msg="Application installed: %s" % name, source=url, use='url')
     elif path and os.path.exists(path):
         install(module, name, path, install_path)
-        module.exit_json(changed=True, msg="Application installed: %s" % name, source=path)
+        module.exit_json(changed=True, msg="Application installed: %s" % name, source=path, use='path')
     else:
         module.fail_json(msg="File not exists, change path or set url as secondary option", file=path)
 
