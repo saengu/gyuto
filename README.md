@@ -19,6 +19,59 @@ $ source venv/bin/activate.fish
 (venv)$ pip install -r requirements.txt
 ```
 
+## collection说明
+```
+.
+└── provision
+    ├── mac                     # MacOS相关的module和playbook，比如DMG安装模块和新电脑初始化配置的playbook
+    │   ├── README.md
+    │   ├── docs
+    │   ├── galaxy.yml
+    │   ├── meta
+    │   │   └── runtime.yml
+    │   ├── playbooks           # MacOS的常用操作playbook
+    │   │   ├── backup.yml
+    │   │   ├── bootstrap.yml
+    │   │   └── restore.yml
+    │   ├── plugins
+    │   │   ├── README.md
+    │   │   └── modules
+    │   │       └── dmg.py
+    │   └── roles
+    └── pkg                     # 多平台常用软件包的安装和配置，每个软件包最好要支持多个平台
+        ├── README.md
+        ├── docs
+        ├── galaxy.yml
+        ├── meta
+        │   └── runtime.yml
+        ├── plugins
+        │   └── README.md
+        └── roles               # 软件及配置
+```
+
+## 查看模块文档
+
+```
+# 查看当前可以用模块
+$ ansible-doc -l provision.mac
+
+# 查看模块文档
+$ ansible-doc provision.mac
+```
+
+## 创建collection
+
+```
+$ cd ansible_collections
+$ ansible-galaxy collection init provision.pkg
+```
+
+## 查看本机的facts
+
+```
+$ ansible localhost -m setup
+```
+
 ## 测试模块
 
 ```
@@ -30,9 +83,28 @@ ansible-playbook -vvv -c localhost  test_dmg.yml
 
 ```
 
+# 集成测试
+
+
+## 创建
+
+```
+$ cd ansible_collections/provision/pkg
+$ mkdir -p tests/integration/targets/setup_abstract_service/tasks
+$ touch tests/integration/targets/setup_abstract_service/tasks/main.yml
+```
+
+## 执行测试
+
+```
+$ cd ansible_collections/provision/pkg
+$ ansible-test integration --local dmg
+$ ansible-test integration -vvv --local dmg
+```
+
 ## MacOS
 
-MacOS自带Python3，配置好环境以后即可运行。常用电脑初始化:
+MacOS自带Python3，Ensure Apple's command line tools are installed (xcode-select --install to launch the installer). 配置好环境以后即可运行。常用电脑初始化:
 
 ```
 $ ansible-playbook provision.mac.bootstrap -c localhost
@@ -77,3 +149,22 @@ $ ansible-playbook provision.mac.backup -e "dest=2023.01.01.tar.gz" -c localhost
 # 常用命令
 
 
+借鉴文档以及macos enable setremotelogin in cli
+https://github.com/geerlingguy/mac-dev-playbook
+# some thoughts
+after gather facts of target machine, confirm if need to init the specific platform and ask for an environment, then include a role in playbook with for the platform and env.
+
+roles/mac-regular
+roles/mac-develop
+roles/ubuntu-develop
+roles/ubuntu-project
+
+- name: Deploying application code
+  hosts: uat-aegis
+
+  roles:
+    - role: roles/application_code_backup
+      vars:
+        backup_directory_name: "NAME"
+        repo_directory: "/path/to/repo"
+      when: var1 | bool
