@@ -30,12 +30,50 @@ ansible-playbook -vvv -c localhost  test_dmg.yml
 
 ```
 
-
 ## MacOS
 
-MacOS一般自带
+MacOS自带Python3，配置好环境以后即可运行。常用电脑初始化:
+
+```
+$ ansible-playbook provision.mac.bootstrap -c localhost
+```
+
+## 数据备份
+
+```
+$ ansible-playbook provision.mac.backup -e "dest=2023.01.01.tar.gz" -c localhost
+```
+
+## 数据恢复
+
+```
+$ ansible-playbook provision.mac.backup -e "dest=2023.01.01.tar.gz" -c localhost
+```
 
 # 目录说明
 
+```
+.
+├── README.md
+├── ansible.cfg
+├── ansible_collections
+│   └── provision
+│       └── mac
+│           ├── README.md
+│           ├── playbooks
+│           │   ├── backup.yml
+│           │   ├── bootstrap.yml
+│           │   └── restore.yml
+│           ├── plugins
+│           │   ├── README.md
+│           │   └── modules
+│           │       └── dmg.py
+│           └── roles
+├── inventory
+├── playbook.yml
+└── requirements.txt
+```
+
 # 常用命令
+
 

@@ -220,7 +220,7 @@ def main():
 
     # check if there is no dest file
     if os.path.exists(install_path):
-        module.exit_json(msg="%s has already been installed" % name)
+        module.exit_json(msg="Application already installed: %s" % name)
 
     if url and (not path or not os.path.exists(path)):
         # download file to tmp folder and set path
@@ -228,10 +228,10 @@ def main():
         # reference https://github.com/ansible/ansible/blob/652a74e0872fa3127c6df12e9ac1cbe0893d0793/lib/ansible/modules/get_url.py#L390
         with fetch_file(module, url) as (fd, tempname):
             install(module, name, tempname, install_path)
-            module.exit_json(changed=True, msg="Install %s successfully" % name, source=url)
+            module.exit_json(changed=True, msg="Application installed: %s" % name, source=url)
     elif path and os.path.exists(path):
         install(module, name, path, install_path)
-        module.exit_json(changed=True, msg="Install %s successfully" % name, source=path)
+        module.exit_json(changed=True, msg="Application installed: %s" % name, source=path)
     else:
         module.fail_json(msg="File not exists, change path or set url as secondary option", file=path)
 
