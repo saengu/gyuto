@@ -4,9 +4,13 @@
 #
 # inspired by
 #   - https://gist.github.com/mrlesmithjr/f3c15fdd53020a71f55c2032b8be2eda
-- name: Install MacOS Packages
 ################################################
+- name: Setup development environment for MacOS
   hosts: all
+
+  collections:
+    - provision.pkg
+
   pre_tasks:
     - name: Ensuring Homebrew Is Installed
       stat:
@@ -17,11 +21,14 @@
       shell: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
       when: not homebrew_check.stat.exists
 
+  roles:
+    - sublime
+
   tasks:
-  #  - name: Updating Homebrew
-  #    homebrew:
-  #      update_homebrew: true
-  #    when: homebrew_check.stat.exists
+    - name: Updating Homebrew
+      homebrew:
+        update_homebrew: true
+      when: homebrew_check.stat.exists
  
   #  - name: Installing Homebrew Cask Packages
   #    homebrew_cask:
@@ -31,12 +38,17 @@
   #    until: result is successful
   #    when: homebrew_check.stat.exists
 
-    - name: Install Homebrew Packages
+    - name: Install tree package
       homebrew:
         name: tree
         state: present
 
-    - name: Install DMG Packages
-      dmg:
-        name: "Motrix"
-        path: "~/Downloads/Motrix-1.6.11.dmg"
+  #  - name: Install helix package
+  #    homebrew:
+  #      name: helix
+  #      state: present
+
+    #- name: Install DMG Packages
+    #  dmg:
+    #    name: "Motrix"
+    #    path: "~/Downloads/Motrix-1.6.11.dmg"

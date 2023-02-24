@@ -31,6 +31,10 @@
       debug:
         var: os_type
 
-- name: Include a play after another play
-  ansible.builtin.import_playbook: "regular.yml"
+- name: Setup regular environment
+  import_playbook: "regular.yml"
   when: hostvars['localhost']['os_type'] == 'regular'
+
+- name: Setup develop environment
+  import_playbook: "develop.yml"
+  when: hostvars['localhost']['os_type'] == 'develop'

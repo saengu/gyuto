@@ -1,0 +1,89 @@
+---
+###############################################
+#  Install and setup Sublime Text 4 Editor
+#   - Download from official site
+#
+#
+#  
+# inspired by
+#  - https://github.com/feffi/ansible-macos-sublime
+###############################################
+
+# Download from official site and install to /Applications directory
+- name: Install Sublime Text 4 Editor
+  block:
+  - name: Check if Sublime Text installed
+    stat:
+      path: "/Applications/Sublime Text.app"
+    register: sublime_exists
+
+  - tempfile:
+      state:  file
+      suffix: sublime
+    register: temp_sublime
+
+  - name: Download sublime package from official site
+    get_url:
+      url: https://download.sublimetext.com/sublime_text_build_4143_mac.zip
+      dest: "{{temp_sublime.path}}"
+
+  - name: Unzip Sublime package
+    unarchive:
+      #src: "{{temp_sublime.path}}/sublime.zip"
+      src: "{{temp_sublime.path}}"
+      dest: "/Applications"
+      remote_src: true
+
+# Install Sublime Packages
+- name: Install PackageControl package
+  block:
+    - name: Check Sublime Text settings directory
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - "{{ ansible_env.HOME }}/Library/Application Support/Sublime Text/Installed Packages"
+        - "{{ ansible_env.HOME }}/Library/Application Support/Sublime Text/Packages/User"
+        - "{{ ansible_env.HOME }}/Library/Application Support/Sublime Text/Local"
+
+    - name: Download PackageControl to Installed Packages folder
+      get_url:
+        url: "https://packagecontrol.io/Package%20Control.sublime-package"
+        #url: "http://packagecontrol.io/Package Control.sublime-package"
+        dest: "{{ ansible_env.HOME }}/Library/Application Support/Sublime Text/Installed Packages/Package Control.sublime-package"
+        owner: "{{ ansible_user_id }}"
+        group:  "{{ ansible_user_gid }}"
+        mode: 0644
+
+- name: ensures {{ project_root }}/conf dir exists
+  file:
+    path: "{{ ansible_env.HOME }}/Library/Application Support/Sublime Text/Packages/User"
+    state: directory
+
+- name: Set use preferences
+  copy:
+    dest: "{{ ansible_env.HOME }}/Library/Application Support/Sublime Text/Packages/User/Preferences.sublime-settings"
+    content: |
+      {{ sublime.preferences | to_nice_json }}
+  when: sublime.preferences
+
+- name: Set Package Control preferences
+  copy:
+    dest: "{{ ansible_env.HOME }}/Library/Application Support/Sublime Text/Packages/User/Package Control.sublime-settings"
+    content: |
+      {
+          "installed_packages":
+          [
+      {% for package in sublime.packagecontrol %}
+              "{{ package }}"{% if not loop.last %},{% endif %}
+      {% endfor %}
+          ]
+      }
+  when: sublime.packagecontrol
+
+- name: Set license
+  copy:
+    dest: "{{ ansible_env.HOME }}/Library/Application Support/Sublime Text/Local/License.sublime_license"
+    content: |
+      {{ sublime.license }}
+  when: sublime.license

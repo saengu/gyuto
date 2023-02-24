@@ -102,6 +102,22 @@ $ ansible-test integration --local dmg
 $ ansible-test integration -vvv --local dmg
 ```
 
+## Role开发
+
+```
+$ mkdir ansible_collections/provision/pkg/roles/sublime
+```
+
+### Role测试
+```
+$ cd ansible_collections/provision/pkg
+# or
+$ cd ansible_collections/provision/pkg/roles
+
+# 单独运行roles
+$ ansible localhost -m include_role -a name=sublime
+```
+
 ## MacOS
 
 MacOS自带Python3，Ensure Apple's command line tools are installed (xcode-select --install to launch the installer). 配置好环境以后即可运行。常用电脑初始化:
