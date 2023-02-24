@@ -1,0 +1,25 @@
+---
+- name: Install MacOS Packages
+  hosts: all
+  collections:
+    - provision.pkg
+  pre_tasks:
+    - name: Ensuring Homebrew Is Installed
+      stat:
+        path: /usr/local/bin/brew
+      register: homebrew_check
+
+    - name: Homebrew is missing...Installing from http://brew.sh
+      shell: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      when: not homebrew_check.stat.exists
+
+  tasks:
+    - name: Install Homebrew Packages
+      homebrew:
+        name: tree
+        state: present
+
+    - name: Install DMG Packages
+      dmg:
+        name: "Motrix"
+        path: "~/Downloads/Motrix-1.6.11.dmg"

@@ -1,38 +1,36 @@
 ---
-# Inspired by
+################################################
+# Setup a brand new MacOS out of the box
+#
+# inspired by
 #   - https://gist.github.com/mrlesmithjr/f3c15fdd53020a71f55c2032b8be2eda
-- name: Install MacOS Packages
-  hosts: all
-  pre_tasks:
-    - name: Ensuring Homebrew Is Installed
-      stat:
-        path: /usr/local/bin/brew
-      register: homebrew_check
+################################################
 
-    - name: Homebrew is missing...Installing from http://brew.sh
-      shell: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-      when: not homebrew_check.stat.exists
+- name: Setup MacOS
+  hosts: all
+
+  vars_prompt:
+    - name: choosed_os_type
+      prompt: |
+        Choose a type to setup according to the usage purpose
+          [1] Regular
+          [2] Develop
+      private: false
 
   tasks:
-  #  - name: Updating Homebrew
-  #    homebrew:
-  #      update_homebrew: true
-  #    when: homebrew_check.stat.exists
- 
-  #  - name: Installing Homebrew Cask Packages
-  #    homebrew_cask:
-  #      name: "{{ brew_cask_packages }}"
-  #      state: present
-  #    register: result
-  #    until: result is successful
-  #    when: homebrew_check.stat.exists
+    - block:
+      - name: Set os_type=regular
+        set_fact: os_type=regular
+        when: choosed_os_type in ['1', 'r', 'regular', 'Regular']
 
-    - name: Install Homebrew Packages
-      homebrew:
-        name: tree
-        state: present
+      - name: Set os_type=develop
+        set_fact: os_type=develop
+        when: choosed_os_type in ['2', 'd', 'develop', 'Develop']
 
-    - name: Install DMG Packages
-      dmg:
-        name: "Motrix"
-        path: "~/Downloads/Motrix-1.6.11.dmg"
+    - name: Show fact
+      debug:
+        var: os_type
+
+- name: Include a play after another play
+  ansible.builtin.import_playbook: "regular.yml"
+  when: hostvars['localhost']['os_type'] == 'regular'
