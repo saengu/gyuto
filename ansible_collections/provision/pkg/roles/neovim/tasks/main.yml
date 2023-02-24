@@ -1,0 +1,24 @@
+---
+- name: Install NeoVim
+  homebrew:
+    name: neovim
+    state: present
+
+- name: Set Variables
+  set_fact:
+    home: "{{ lookup('env', 'HOME') }}"
+
+- name: Debug ENV
+  debug:
+    msg: "HOME={{ home }}"
+
+- name: Create .config Folder
+  file:
+    path: "{{ home }}/.config" 
+    state: directory
+    recurse: true
+
+- name: Copy Configuration Files
+  copy:
+    src: nvim
+    dest: "{{ home }}/.config/"

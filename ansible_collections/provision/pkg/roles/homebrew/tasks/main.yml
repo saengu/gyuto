@@ -1,0 +1,11 @@
+---
+- name: Check Homebrew Is Not Installed
+  stat:
+    path: /usr/local/bin/brew
+  register: homebrew_check
+
+- name: Installing Homebrew (Only for MacOSX)
+  shell: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  when:
+    - ansible_os_family == 'Darwin' and ansible_distribution == 'MacOSX'
+    - not homebrew_check.stat.exists

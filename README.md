@@ -4,6 +4,8 @@ Gyuto即牛刀，非杀鸡焉用牛刀的牛刀，而是日本料理中从西式
 
 本项目是使用ansible以及其他工具完成对日常使用的电脑的配置维护，确保在新电脑上能够快速配置好常用工具，与原来的电脑有一样的使用体验。
 
+Inspired by:
+1. https://gist.github.com/mrlesmithjr/f3c15fdd53020a71f55c2032b8be2eda
 
 # 安装配置
 
