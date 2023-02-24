@@ -1,56 +1,55 @@
 ---
 - when: ansible_distribution == 'MacOSX'  # ONLY run on MacOS
   block:
-    - name: Check Motrix file
-      stat: path=/Applications/Motrix.app
+    - name: Display config
+      debug:
+        var: dmg
+
+    - name: Check {{dmg.name}} file
+      stat: path=/Applications/{{dmg.name}}.app
       register: motrix_check
 
-    - name: debug
-      debug:
-        var: motrix_check
-        #msg: "motrix exists: {{motrix_check}}"
-
-    - name: Ensure Motrix not installed
+    - name: Ensure {{dmg.name}} not installed
       fail:
-        msg: "Delete Motrix in /Applications and run again"
+        msg: "Delete {{dmg.name}} in /Applications and run again"
       when: motrix_check.stat.exists
 
-    - name: Check Motrix DMG file
-      stat: path="~/Downloads/Motrix-1.6.11.dmg"
+    - name: Check {{dmg.name}} DMG file
+      stat: path="{{dmg.path}}"
       register: dmg_check
 
-    - name: Ensure Motrix DMG file exists
+    - name: Ensure {{dmg.name}} DMG file exists
       fail:
-        msg: "Download Motrix to ~/Downloads directory and run again"
+        msg: "Download {{dmg.name}} to ~/Downloads directory and run again"
       when: not dmg_check.stat.exists
 
-    - name: Install Motrix from local DMG file
+    - name: Install {{dmg.name}} from local DMG file
       dmg:
-        name: "Motrix"
-        path: "~/Downloads/Motrix-1.6.11.dmg"
+        name: "{{dmg.name}}"
+        path: "{{dmg.path}}"
 
-    - name: Check Motrix file
-      stat: path=/Applications/Motrix.app
+    - name: Check {{dmg.name}} file
+      stat: path="/Applications/{{dmg.name}}.app"
       register: motrix_check
 
-    - name: Verify Motrix installed
+    - name: Verify {{dmg.name}} installed
       assert:
         that: motrix_check.stat.exists 
 
-    - name: Remove Motrix
+    - name: Remove {{dmg.name}}
       file:
-        path: /Applications/Motrix.app
+        path: "/Applications/{{dmg.name}}.app"
         state: absent
 
-    - name: Install Motrix from remote url
+    - name: Install {{dmg.name}} from remote url
       dmg:
-        name: Motrix
-        url: https://dl.moapp.me/https://github.com/agalwood/Motrix/releases/download/v1.6.11/Motrix-1.6.11.dmg
+        name: "{{dmg.name}}"
+        url:  "{{dmg.url}}"
 
-    - name: Check Motrix file
-      stat: path=/Applications/Motrix.app
+    - name: Check {{dmg.name}} file
+      stat: path="/Applications/{{dmg.name}}.app"
       register: motrix_check
 
-    - name: Verify Motrix installed
+    - name: Verify {{dmg.name}} installed
       assert:
         that: motrix_check.stat.exists 

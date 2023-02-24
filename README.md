@@ -116,6 +116,47 @@ $ ansible-playbook provision.mac.bootstrap -c localhost
 $ ansible-playbook provision.mac.backup -e "dest=2023.01.01.tar.gz" -c localhost
 ```
 
+考虑使用ansible提供的ansible.posix.synchronize模块，该模块封装了rsync
+
+安装ansible.posix集合
+```
+$ ansible-galaxy collection install ansible.posix
+```
+
+一旦使用需要把该模块放到galaxy requirements.txt文件中，以方便使用。
+## 使用示例
+
+```
+# User + Key Setup
+    - name: Create a new regular user with sudo privileges
+      user:
+        name: "{{ create_user }}"
+        state: present
+        groups: wheel
+        append: true
+        create_home: true
+        shell: /bin/bash
+
+    - name: Execute rsync command so new user has the same authorized keys as root
+      ansible.posix.synchronize:
+        src: /root/.ssh
+        dest: /home/{{ create_user }}
+      delegate_to: "{{ inventory_hostname }}"
+
+    - name: Change .ssh file permission
+      ansible.builtin.file:
+        path: /home/{{ create_user }}/.ssh
+        state: directory
+        recurse: yes
+        owner: "{{ create_user }}"
+        group: "{{ create_user }}"
+
+    - name: Set authorized key for remote user
+      authorized_key:
+        user: "{{ create_user }}"
+        state: present
+        key: "{{ copy_local_key }}"
+```
 ## 数据恢复
 
 ```
