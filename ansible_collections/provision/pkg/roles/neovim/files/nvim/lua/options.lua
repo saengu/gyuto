@@ -4,7 +4,7 @@ local opt = vim.opt
 g.mapleader = " "
 g.maplocalleader = " "
 
-opt.cmdheight = 0             -- hide command line unless needed
+--opt.cmdheight = 0             -- hide command line unless needed
 opt.encoding = "utf-8"
 opt.expandtab = true          -- Enable the use of space in tab
 opt.mouse = "a"               --Enable mouse mode
