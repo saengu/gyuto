@@ -8,6 +8,7 @@
 --     wk.register(mappings)
 --------------------------------------------------------------------------
 
+-- TODO: add more help functions for other modules to register key binding
 local M = { "folke/which-key.nvim" }
 
 function M.register_multi_mode(mappings, modes)
