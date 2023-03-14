@@ -1,3 +1,4 @@
 .idea
 venv
 ansible_collections/provision/pkg/tests/output
+lazy-lock.json
