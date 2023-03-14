@@ -118,6 +118,22 @@ $ cd ansible_collections/provision/pkg/roles
 
 # 单独运行roles
 $ ansible localhost -m include_role -a name=sublime
+# or 
+$ ansible all -i hosts.yml -m include_role -a "name=myrole"
+```
+
+上面命令在运行的时候是不会执行`gather_facts`, 如果安装的Role依赖`ansible_facts`可以考虑使用根目录下的`ansbible-role.sh`脚本安装
+
+```
+$ cd ansible_collections/provision/pkg
+$ ../../../ansible-role.sh localhost sublime
+```
+
+或者在role的task文件中增加一个`gather_facts`的任务，如
+
+```
+- gather_facts:
+  when: "'ansible_distribution' not in ansible_facts"
 ```
 
 ## MacOS
