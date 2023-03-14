@@ -1,13 +1,11 @@
 ---
-###############################################
+#####################################################
 #  Install and setup Sublime Text 4 Editor
-#   - Download from official site
+#    - Download from official site
 #
-#
-#
-# inspired by
-#  - https://github.com/feffi/ansible-macos-sublime
-###############################################
+#  inspired by
+#    - https://github.com/feffi/ansible-macos-sublime
+#####################################################
 
 - name: "Install and setup Sublime Text 4 Editor on MacOS"
   import_tasks: macos.yml
