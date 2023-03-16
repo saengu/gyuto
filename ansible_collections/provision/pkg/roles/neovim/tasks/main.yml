@@ -1,6 +1,8 @@
 ---
+# Install package via homebrew on MacOS when
+# community-general galaxy collection is installed
 - name: Install NeoVim
-  homebrew:
+  package:
     name: neovim
     state: present
 

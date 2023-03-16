@@ -1,0 +1,10 @@
+---
+- name: Install Firefox
+  package:
+    name: firefox
+    state: present
+
+- name: Copy Policy File
+  copy:
+    src: policies.json
+    dest: /Applications/Firefox.app/Contents/Resources/distribution/

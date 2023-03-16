@@ -1,0 +1,10 @@
+---
+##############################################################
+#
+#  Install and setup Firefox
+#
+##############################################################
+
+- name: "Install and setup Firefox on MacOS"
+  import_tasks: macos.yml
+  when: ansible_os_family == 'Darwin' and ansible_distribution == 'MacOSX'

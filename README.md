@@ -21,6 +21,29 @@ $ source venv/bin/activate.fish
 (venv)$ pip install -r requirements.txt
 ```
 
+## 安装Homebrew module (MacOS only)
+
+```
+$ ansible-galaxy collection install community.general
+```
+当ansible homebrew module安装好以后，可以通过homebrew 指令来安装包
+
+```
+- name: Install Package via Homebrew on MacOS
+  homebrew:
+    name: "{{package_name}}"
+    state: present
+```
+
+如果在多个平台上安装，也可以通过package指令安装包, 前提是预先安装community.general galaxy collection
+
+```
+- name: Install Package cross-platform (include MacOS, not include Windows)
+  package:
+    name: "{{package_name}}"
+    state: present
+```
+
 ## collection说明
 ```
 .
