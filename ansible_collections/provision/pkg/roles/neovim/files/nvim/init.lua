@@ -8,4 +8,4 @@ require("mappings")
 
 
 -- Load lazy.nvim plugin manager and setup plugins
-require("plugin")
+require("core.lazy")

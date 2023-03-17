@@ -6,7 +6,7 @@ local M = {
 }
 
 function M.config()
-  local icons = require("icons")
+  local icons = require("core.icons")
   local wk = require("which-key")
   local telescope = require('telescope')
   local actions = require("telescope.actions")
