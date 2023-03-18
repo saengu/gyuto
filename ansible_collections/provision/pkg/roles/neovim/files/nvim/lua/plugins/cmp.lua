@@ -22,6 +22,7 @@ function M.config()
     --    require('snippy').expand_snippet(args.body) -- For `snippy` users.
     --  end,
     --},
+    preselect = cmp.PreselectMode.None,
     window = {
       -- completion = cmp.config.window.bordered(),
       -- documentation = cmp.config.window.bordered(),
@@ -37,8 +38,10 @@ function M.config()
       ['<C-e>'] = cmp.mapping.close(),
       ['<CR>'] = cmp.mapping.confirm({
         behavior = cmp.ConfirmBehavior.Insert,
-        select = true,
-      })
+        select = false, -- To input enter correctly
+        --behavior = cmp.ConfirmBehavior.Replace,
+        --select = true,
+      }),
       --['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     },
     sources = {
