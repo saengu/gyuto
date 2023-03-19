@@ -21,7 +21,6 @@ end
 
 function M.config()
   local tree = require('nvim-tree')
-  local wk = require("which-key")
 
   -- Open nvim-tree in current buffer when nvim open a directory
   -- Refer to https://github.com/nvim-tree/nvim-tree.lua/wiki/Open-At-Startup
@@ -29,35 +28,20 @@ function M.config()
 
   -- Close nvim-tree if it is the last buffer
   -- Refer to https://github.com/nvim-tree/nvim-tree.lua/wiki/Auto-Close#beauwilliams
-  vim.api.nvim_create_autocmd("BufEnter", {
-    group = vim.api.nvim_create_augroup("NvimTreeClose", {clear = true}),
-    pattern = "NvimTree_*",
-    callback = function()
-      local layout = vim.api.nvim_call_function("winlayout", {})
-      if layout[1] == "leaf" and vim.api.nvim_buf_get_option(vim.api.nvim_win_get_buf(layout[2]), "filetype") == "NvimTree" and layout[3] == nil then vim.cmd("confirm quit") end
-    end
-  })
+  --vim.api.nvim_create_autocmd("BufEnter", {
+  --  group = vim.api.nvim_create_augroup("NvimTreeClose", {clear = true}),
+  --  pattern = "NvimTree_*",
+  --  callback = function()
+  --    local layout = vim.api.nvim_call_function("winlayout", {})
+  --    if layout[1] == "leaf" and vim.api.nvim_buf_get_option(vim.api.nvim_win_get_buf(layout[2]), "filetype") == "NvimTree" and layout[3] == nil then vim.cmd("confirm quit") end
+  --  end
+  --})
 
   -- Show diagnostic icons
   tree.setup({
     diagnostics = {
       enable = true
     }
-  })
-
-  -- Set key mappings
-  local mappings = {
-    e = {
-      name = "+NvimTree",
-      t = { ":NvimTreeToggle<CR>", "Toggle Tree" },
-      f = { ":NvimTreeFocus<CR>", "Open and Focus on Tree" },
-      s = { ":NvimTreeFindFile<CR>", "Find Current File" },
-    }
-  }
-
-  wk.register(mappings, {
-    mode = "n", -- Normal mode
-    prefix = "<leader>"
   })
 end
 

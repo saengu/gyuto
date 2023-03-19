@@ -5,7 +5,70 @@
 --     local wk = require("which-key")
 --     local mappings = ...
 --     wk.register(mappings)
+--   end
 
+local key = require("core.key")
+
+
+-----------------------------------------------------------
+--
+-- Setup Key Bindings from SpaceVim
+--
+-----------------------------------------------------------
+
+---------------------------------------
+-- Buffers manipulation key bindings
+---------------------------------------
+key.native = false
+key.set({
+  b = {
+    name = "Buffer",
+    b = { "<cmd>bnext<cr>", "Switch to next buffer" },
+    f = { "<cmd>Telescope buffers<cr>", "Find buffer" },
+    n = { "<cmd>bnext<cr>", "Switch to next buffer" },
+    p = { "<cmd>bprevious<cr>", "Switch to previous buffer" },
+  },
+
+  f = {
+    name = "Files",
+    b = { "<cmd>Telescope buffers<cr>", "Find files in buffer directory" },
+    c = { "<cmd>Telescope commands<cr>", "Find files in buffer directory" },
+    f = { "<cmd>Telescope find_files<cr>", "Find files in buffer directory" },
+    g = { "<cmd>Telescope live_grep<cr>", "Find files in buffer directory" },
+
+    e = {
+      name = "File Explorer",
+      e = { "<cmd>NvimTreeToggle<cr>", "Toggle file explorer" },
+      f = { "<cmd>NvimTreeFocus<cr>", "Open and focus on file explorer" },
+      l = { "<cmd>NvimTreeFindFile<cr>", "Locate file of the current buffer in tree" },
+    }
+  },
+
+  w = {
+    name = "Windows",
+    ['<Tab>'] = { "<cmd>wincmd w<cr>", "Go to next window" },
+    ['<S-Tab>'] = { "<cmd>wincmd p<cr>", "Go to prevous window" },
+    h = { ":wincmd h<cr>", "Go to left window" }, -- The default behavior of : is to place the count before the command.
+    j = { ":wincmd j<cr>", "Go to below window" },
+    k = { ":wincmd k<cr>", "Go to above window" },
+    l = { ":wincmd l<cr>", "Go to right window" },
+    p = { ":wincmd p<cr>", "Go to previous visited window" },
+    -- You can obtain that number from the v:count or v:count1 variable. See :help v:count
+    -- Why <C-U>, because if you use a count before running into command line, vim will insert a range automatically. 
+    -- <C-U> is used to clear that range so that we do not run into error when running a command that does not take a range.
+    -- Refer to https://superuser.com/questions/410847/how-do-you-create-a-vim-key-mapping-that-requires-numbers-before-the-hotkey-lik
+    w = { ":<C-U>exe v:count.'wincmd w'<cr>", "Go to window of given number" },
+  },
+}, { mode = 'n', prefix = '<leader>' })
+
+
+
+-----------------------------------------------------------
+--
+-- Old Key Bindings
+--
+-- TODO: rewrite below bindings with new core.key api
+-----------------------------------------------------------
 local map = vim.keymap.set
 
 local default_opts = { noremap = true, silent = true }

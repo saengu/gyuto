@@ -6,7 +6,9 @@
 -- it still can work without which-key plugin, it's ok to put in core module.
 --
 -- Inspired by https://github.com/AstroNvim/AstroNvim/blob/46d47ca291445b54e075c48c5e140908b5e3be69/lua/astronvim/utils/init.lua#L177
-local M = {}
+local M = {
+  native = false,  -- Force to use vim.keymap.set
+}
 
 
 -- Register key mappings using similar api like which-key.register
@@ -17,10 +19,10 @@ function M.set(mappings, options)
   local util = require("core.util")
   local wk, err = util.prequire("which-key")
 
-  if wk then
+  if wk and not native then
     wk.register(mappings, options)
   else
-    M.walk(mappings, options)
+    M.register(mappings, options)
   end
 end
 
@@ -82,7 +84,7 @@ end
 -- Refer to https://github.com/folke/which-key.nvim/blob/fb027738340502b556c3f43051f113bcaa7e8e63/lua/which-key/mappings.lua#L86
 -- @param mappings table: key map settings
 -- @param options table: mapping options
-function M.walk(mappings, options)
+function M.register(mappings, options)
   options = options or {}
 
   if type(mappings) ~= "table" then
@@ -111,7 +113,7 @@ function M.walk(mappings, options)
       if type(key) == "string" then
         o.prefix = (opts.prefix or "") .. key
       end
-      M.walk(val, o)
+      M.register(val, o)
     end
   -- If a mappings contains exactly two number indexed element, the first is cmd or
   -- callback for key map, and the second is description, it is the final mapping. 
@@ -119,6 +121,7 @@ function M.walk(mappings, options)
     -- Stop condition for recusively parsing mappings.
     -- args[1] is cmd or function
     assert(type(args[1]) == "string" or type(args[1]) == "function")
+
     -- args[2] is desc and ignore it
     assert(type(args[2]) == "string")
 
