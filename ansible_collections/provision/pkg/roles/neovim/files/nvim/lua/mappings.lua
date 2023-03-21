@@ -31,16 +31,16 @@ key.set({
 
   f = {
     name = "Files",
-    b = { "<cmd>Telescope buffers<cr>", "Find files in buffer directory" },
-    c = { "<cmd>Telescope commands<cr>", "Find files in buffer directory" },
-    f = { "<cmd>Telescope find_files<cr>", "Find files in buffer directory" },
-    g = { "<cmd>Telescope live_grep<cr>", "Find files in buffer directory" },
+    b = { "<cmd>Telescope buffers<cr>", "Find buffers" },
+    c = { "<cmd>Telescope commands<cr>", "Find commands" },
+    f = { "<cmd>Telescope find_files<cr>", "Find files" },
+    g = { "<cmd>Telescope live_grep<cr>", "Grep files" },
 
     e = {
       name = "File Explorer",
       e = { "<cmd>NvimTreeToggle<cr>", "Toggle file explorer" },
       f = { "<cmd>NvimTreeFocus<cr>", "Open and focus on file explorer" },
-      l = { "<cmd>NvimTreeFindFile<cr>", "Locate file of the current buffer in tree" },
+      l = { "<cmd>NvimTreeFindFile<cr>", "Locate file in tree" },
     }
   },
 
@@ -57,7 +57,19 @@ key.set({
     -- Why <C-U>, because if you use a count before running into command line, vim will insert a range automatically. 
     -- <C-U> is used to clear that range so that we do not run into error when running a command that does not take a range.
     -- Refer to https://superuser.com/questions/410847/how-do-you-create-a-vim-key-mapping-that-requires-numbers-before-the-hotkey-lik
-    w = { ":<C-U>exe v:count.'wincmd w'<cr>", "Go to window of given number" },
+    --w = { ":<C-U>exe v:count.'wincmd w'<cr>", "Go to window of given number" },
+    -- Go to next window if no window number provide otherwise go to window of the specific number
+    w = {
+      function()
+        local cnt = vim.v.count
+        if cnt == 0 then
+          vim.cmd(':wincmd w')
+        else
+          vim.cmd(':' .. cnt .. 'wincmd w')
+        end
+      end,
+      "Go to next or specific window"
+    },
   },
 }, { mode = 'n', prefix = '<leader>' })
 
