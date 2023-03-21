@@ -1,14 +1,20 @@
 local diagnostic = require("core.diagnostic")
+local highlight = require("core.util").highlight
 
--- Change floating box of telescope from purple to black backgroud
-vim.cmd("hi NormalFloat ctermfg=LightGrey")
+
+-- Change floating box from purple to black backgroud
+--highlight('NormalFloat', { bg='#3C3836', fg='White', ctermbg=237, ctermfg='White' })
 
 
 -- Change the color of nvim-cmp prompt box
-vim.cmd("hi Pmenu guifg=#FBF3D5 ctermfg=223 guibg=#3c3836 ctermbg=237 gui=NONE cterm=NONE")
-vim.cmd("hi PmenuSel guifg=#000000 ctermfg=black guibg=#FFFFFF ctermbg=255 gui=NONE cterm=NONE")
-vim.cmd("hi PmenuSbar guifg=NONE ctermfg=NONE guibg=#665c54 ctermbg=59 gui=NONE cterm=NONE")
-vim.cmd("hi PmenuThumb guifg=NONE ctermfg=NONE guibg=#ebdbb2 ctermbg=223 gui=NONE cterm=NONE")
+highlight('Pmenu',  { bg='#3C3836', fg='#FBF3D5', ctermbg=237, ctermfg=223, default=false })
+highlight('PmenuSel', { bg='White', fg='Black', ctermbg='White', ctermfg='Black', default=false })
+--highlight('PmenuSbar', { bg='#665C54', ctermbg=59 })
+--highlight('PmenuThumb', { bg='#EBDBB2', ctermbg=223 })
+
+
+-- Make comments italic
+highlight('Comment', { italic=true, default=true })
 
 
 -- Custom diagnostics icons and style of other UI elements
