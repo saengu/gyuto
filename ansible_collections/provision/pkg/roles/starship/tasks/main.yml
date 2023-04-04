@@ -1,0 +1,24 @@
+---
+#####################################################
+#
+#  Install starship prompt tool
+#
+#####################################################
+
+- name: Set variables
+  set_fact:
+    home: "{{ lookup('env', 'HOME') }}"
+
+- name: Install starship
+  package:
+    name: starship
+    state: present
+
+- name: Update shell 
+  blockinfile:
+    path: "{{ home }}/.config/fish/config.fish"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK FOR STARSHIP"
+    block: |
+      starship init fish | source
+    backup: yes
+

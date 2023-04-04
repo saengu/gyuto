@@ -1,0 +1,27 @@
+---
+#####################################################
+#
+#  Install and setup Java development environment
+#
+#####################################################
+
+- name: Set variables
+  set_fact:
+    home: "{{ lookup('env', 'HOME') }}"
+
+- name: Install OpenJDK
+  package:
+    name: openjdk
+    state: present
+
+
+- name: Update PATH
+  blockinfile:
+    path: "{{ home }}/.config/fish/config.fish"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK FOR OPENJDK"
+    block: |
+      if test -d /usr/local/opt/openjdk/bin
+          set -x PATH $PATH /usr/local/opt/openjdk/bin
+      end
+    backup: yes
+

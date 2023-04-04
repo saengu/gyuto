@@ -1,0 +1,105 @@
+---
+################################################
+#
+# Setup Termux app on mobile phone
+#
+# Requirements:
+#   1. Install openssh on Termux
+#      > pkg update && pkg add openssh
+#   2. Check sshd config making sure password auth enabled
+#      > cat /data/data/com.termux/files/usr/etc/ssh/sshd_config
+#   3. Set new password
+#      > passwd
+#   4. Check current user
+#      > whoami
+#      u0_a297
+#   5. Check mobile phone IP
+#      > ifconfig
+#   6. Start sshd service which listening to 8022 port
+#      > sshd
+#   7. SSH from other devices by password
+#      > ssh -p 8022 u0_a100@192.168.1.2
+#   8. Install python for Ansible
+#      > pkg add python
+#   9. Create ssh key on another device
+#      > cd ~/.ssh
+#      > ssh-keygen -t rsa -b 2048 -f id_rsa
+#      > ssh-copy-id -p 8022 -i id_rsa u0_a100@192.168.1.2
+#
+# References:
+#    1. https://wiki.termux.com/wiki/Remote_Access 
+#
+################################################
+
+- name: Setup Termux
+  hosts: all
+  vars:
+    ansible_remote_tmp: /data/data/com.termux/files/usr/tmp
+
+  tasks:
+    - name: Update Termux Properties
+      copy:
+        src: 'termux/termux.properties'
+        dest: '$HOME/.termux/termux.properties'
+
+    # Install font only if font file not exsits
+    - stat: path='$HOME/.termux/font.ttf'
+      register: font_file
+    - when: not font_file.stat.exists
+      block:
+      - name: Install NerdFont Ubuntu Mono
+        tempfile:
+          state: directory
+          suffix: temp
+        register: temp_unarch
+
+      - name: '>> Download and Unarchive NerdFont Ubuntu Mono'
+        unarchive:
+          src: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/UbuntuMono.zip
+          dest: '{{ temp_unarch.path }}'
+          remote_src: True
+
+      - name: '>> Copy Font File to $HOME/.termux/font.ttf'
+        copy:
+          src: "{{ temp_unarch.path}}/Ubuntu Mono Nerd Font Complete Mono.ttf"
+          dest: '$HOME/.termux/font.ttf'
+          remote_src: true
+
+    - block:
+      - name: Install Fish Shell and Starship
+        shell:
+          cmd: pkg add -y fish starship
+
+      - name: '>> Copy Fish Config Files'
+        copy:
+          src: 'termux/fish'
+          dest: '$HOME/.config'
+
+      - name: '>> Copy Starship Config File'
+        copy:
+          src: 'termux/starship.toml'
+          dest: '$HOME/.config'
+
+      - name: '>> Change Default Shell to Fish'
+        shell:
+          cmd: chsh -s fish
+
+    - name: Install Git
+      shell:
+        cmd: pkg add -y git
+
+    - name: Install Golang
+      shell:
+        cmd: pkg add -y golang
+
+    - block:
+      - name: Install NeoVim
+        shell:
+          cmd: pkg add -y neovim
+
+      - name: '>> Copy NeoVim Cofnig Files'
+        copy:
+          src: '../../pkg/roles/neovim/files/nvim'
+          dest: '$HOME/.config'
+
+

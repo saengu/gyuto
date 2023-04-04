@@ -48,6 +48,13 @@ $ ansible-galaxy collection install community.general
 ```
 .
 └── provision
+    ├── machine
+    │   └── playbooks           # collection下面的playbooks可以使用嵌套目录，通过namespace.collection.folder.subfolder.playbook来引用
+    │       ├── home
+    │       │   ├── mac.yml
+    │       │   └── linux.yml
+    │       ├── develop.yml
+    │       └── termux.yml
     ├── mac                     # MacOS相关的module和playbook，比如DMG安装模块和新电脑初始化配置的playbook
     │   ├── README.md
     │   ├── docs
@@ -165,6 +172,13 @@ MacOS自带Python3，Ensure Apple's command line tools are installed (xcode-sele
 
 ```
 $ ansible-playbook provision.mac.bootstrap -c localhost
+```
+
+## Termux
+Termux需要使用ssh key进行登陆，然后ansible自带的apt和pkg无法使用，只能用shell.cmd来安装 
+```
+$ cd gyuto
+$ ansible-playbook provision.machine.termux_develop -i "192.168.1.38:8022," -u u0_a297
 ```
 
 ## 数据备份

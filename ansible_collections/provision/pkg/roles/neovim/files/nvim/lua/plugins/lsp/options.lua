@@ -53,6 +53,11 @@ function Options.on_attach(client, bufnr)
       end,
     })
   end
+
+  --local nav = require("nvim-navic")
+  --if client.server_capabilities.documentSymbolProvider then
+  --  nav.attach(client, bufnr)
+  --end
 end
 
 return Options

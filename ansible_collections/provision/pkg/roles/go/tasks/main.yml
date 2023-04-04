@@ -1,0 +1,35 @@
+---
+#####################################################
+#
+#  Install and setup golang development environment
+#
+#####################################################
+
+- name: Set variables
+  set_fact:
+    home: "{{ lookup('env', 'HOME') }}"
+    gopath: ".local/lib/go"
+
+- name: Install Go
+  package:
+    name: go
+    state: present
+
+
+- name: Create GOPATH directory
+  file:
+    path: "{{ home }}/{{ gopath }}"
+    state: directory
+
+- name: Set GOPATH and update PATH
+  blockinfile:
+    path: "{{ home }}/.config/fish/config.fish"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK FOR GOLANG"
+    block: |
+      # Setup golang develop environment
+      if test -d /usr/local/Cellar/go
+          set -x GOPATH $HOME/{{ gopath }}
+          set -x PATH $PATH $GOLANG/bin
+      end
+    backup: yes
+

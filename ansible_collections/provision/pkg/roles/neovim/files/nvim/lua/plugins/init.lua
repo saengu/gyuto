@@ -5,6 +5,9 @@ return {
   -- Press `jk` to work as `Escape`
   { "max397574/better-escape.nvim", opts = { mapping = {'jk'} } },
 
+  -- Show current code context
+  --{ "SmiteshP/nvim-navic", config=true },
+
   -- Beautify diagnostics
   {
     "folke/trouble.nvim",

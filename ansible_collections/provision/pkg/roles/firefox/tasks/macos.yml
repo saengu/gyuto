@@ -4,6 +4,9 @@
     name: firefox
     state: present
 
+# The usage and format of policy file refer to:
+# 1. https://github.com/mozilla/policy-templates/blob/master/README.md#manualappupdateonly
+# 2. https://sysin.org/blog/disable-firefox-auto-update/
 - name: Copy Policy File
   copy:
     src: policies.json

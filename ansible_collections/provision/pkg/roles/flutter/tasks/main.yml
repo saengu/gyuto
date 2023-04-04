@@ -1,0 +1,69 @@
+---
+#####################################################
+#
+#  Install and setup Flutter development environment
+#
+#   - Download SDK official site
+#
+#####################################################
+
+- name: Set variables
+  block:
+    - set_fact:
+        home: "{{ lookup('env', 'HOME') }}"
+
+    - set_fact:
+        # Filepath related to $HOME
+        fish_cfg_file: ".config/fish/config.fish"
+        flutter_root: ".local/lib/flutter"
+        android_home: ".local/lib/android"
+
+- name: Install Flutter SDK
+  block:
+    - name: Download Flutter SDK
+      unarchive:
+        src: "https://storage.googleapis.com/flutter_infra_release/releases/stable/macos/flutter_macos_3.7.7-stable.zip"
+        dest: "{{ home }}/.local/lib/"
+        remote_src: yes
+
+    - name: Set FLUTTER_ROOT env var and add Flutter bin folder to PATH
+      ansible.builtin.blockinfile:
+        path: "{{ home }}/{{ fish_cfg_file }}"
+        marker: "# {mark} ANSIBLE MANAGED BLOCK FOR FLUTTER"
+        block: |
+          if test -d $HOME/{{ flutter_root }}
+            set -x FLUTTER_ROOT $HOME/{{ flutter_root }}
+            set -x PATH $PATH $FLUTTER_ROOT/bin
+          end
+        backup: yes
+
+- name: Install Android SDK
+  when: false
+  block:
+    - name: Create ANDROID_HOME directory
+      file:
+        path: "{{ home }}/{{ android_home }}"
+        state: directory
+
+    - name: Download and install Android SDK
+      unarchive:
+        src: "https://dl.google.com/android/repository/commandlinetools-mac-9477386_latest.zip"
+        dest: "{{ home }}/{{ android_home }}/cmdline-tools/latest"
+        remote_src: yes
+
+    - name: Set ANDROID_HOME env var
+      ansible.builtin.blockinfile:
+        path: "{{ home }}/{{ fish_cfg_file }}"
+        marker: "# {mark} ANSIBLE MANAGED BLOCK FOR ANDROID SDK"
+        block: |
+          if test -d $HOME/{{ android_home }}
+            set -x ANDROID_HOME $HOME/{{ android_home }}
+          end
+        backup: yes
+
+    - name: Install emulator, platform-tools, system-images
+      shell: |
+        $HOME/{{ android_home }}/cmdline-tools/latest/bin/sdkmanager "emulator"
+        $HOME/{{ android_home }}/cmdline-tools/latest/bin/sdkmanager "platform-tools"
+        $HOME/{{ android_home }}/cmdline-tools/latest/bin/sdkmanager "system-images;android-33;google_apis;x86_64"
+
