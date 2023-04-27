@@ -14,6 +14,11 @@
     name: starship
     state: present
 
+- name: 'Copy Config File'
+    copy:
+      src: 'starship.toml'
+      dest: '$HOME/.config'
+
 - name: Update shell 
   blockinfile:
     path: "{{ home }}/.config/fish/config.fish"
