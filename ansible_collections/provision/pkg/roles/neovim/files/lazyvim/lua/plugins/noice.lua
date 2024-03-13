@@ -2,8 +2,10 @@ return {
   "folke/noice.nvim",
   opts = {
     cmdline = {
-      --enabled = true,
-      --view = "cmdline",
+      format = {
+        search_down = { kind = "search", pattern = "^/", icon = "", lang = "regex" },
+        search_up = { kind = "search", pattern = "^%?", icon = "", lang = "regex" },
+      },
     },
   },
 }
