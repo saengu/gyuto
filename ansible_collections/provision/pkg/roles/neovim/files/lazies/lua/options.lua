@@ -8,8 +8,14 @@ vim.opt.mousemoveevent = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
-vim.opt.number = true
+--vim.opt.number = true
+-- only use two digits for relative line number as it will not greater than 100,  two make statuscolumn condense.
+vim.opt.numberwidth = 2
 vim.opt.relativenumber = true
+vim.opt.signcolumn = "yes"    -- always show signcolumn to avoid left most line jump when error occurs
+-- make current line show line number instead of 0 as relative line number
+--vim.opt.statuscolumn = "%=%{v:relnum?v:relnum:v:lnum}"
+
 vim.opt.scrolloff = 10
 
 vim.opt.compatible = false
@@ -23,7 +29,7 @@ vim.opt.autoindent = true
 vim.opt.colorcolumn = "120"
 vim.opt.textwidth = 120
 vim.opt.mouse = "a"
-vim.opt.clipboard = "unnamed"
+vim.opt.clipboard = "unnamed,unnamedplus"
 vim.opt.scrollbind = false
 vim.opt.wildmenu = true
 
