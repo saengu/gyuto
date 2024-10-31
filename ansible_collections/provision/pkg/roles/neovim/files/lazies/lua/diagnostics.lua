@@ -3,6 +3,11 @@
 
 -- Diagnostic settings
 vim.diagnostic.config {
+  float = {
+    border = 'rounded',
+    source = 'always',
+  },
+  severity_sort = true,
   signs = {
       text = {
           [vim.diagnostic.severity.ERROR] = '✘',
@@ -12,7 +17,6 @@ vim.diagnostic.config {
       },
   },
   virtual_text = false,
-  update_in_insert = true,
 }
 
 -- Diagnostic keymaps

@@ -10,7 +10,9 @@ end
 ---@param plugin module Plugin to config
 ---@param opts   table  Shared options from lazies.lsp
 function M.lspconfig.setup(plugin, opts)
-  plugin.gopls.setup({})
+  -- opts is shared with other languages, deepcopy before modification
+  -- local opts = vim.deepcopy(opts, true)
+  plugin.gopls.setup(opts)
 end
 
 return M

@@ -30,5 +30,9 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- Setup lazy.nvim
-require("lazy").setup("lazies.plugins")
+--require("lazy").setup("lazies.plugins")
+require("lazy").setup({
+  spec = {import = "lazies.plugins"},
+  checker = { enabled = false },
+})
 

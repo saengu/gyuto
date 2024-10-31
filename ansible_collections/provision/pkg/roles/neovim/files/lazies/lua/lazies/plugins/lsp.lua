@@ -11,14 +11,6 @@ return {
 
 
     -- Global mappings.
-    -- See `:help vim.diagnostic.*` for documentation on any of the below functions
-    --vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
-    --vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
-    --vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
-    --vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
-    --vim.diagnostic.config({
-    --   float = { border = "rounded" },
-    --})
 
     -- 'lspconfig' does not map keybindings or enable completion by default.
     -- Manual, triggered completion can be provided by neovim's built-in omnifunc.
@@ -60,8 +52,15 @@ return {
       end,
     })
 
+    local opts = {}
+    -- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers.
+    local ok, cmp = pcall(require, "cmp_nvim_lsp")
+    if ok then
+      local capabilities = vim.lsp.protocol.make_client_capabilities() -- override default capabilities of cmp
+      opts["capabilities"] = cmp.default_capabilities(capabilities)
+    end
+
     for name, cfg in pairs(languages) do
-      local opts = {}
       if require("core.fn").iscallable(cfg.lspconfig.setup) then
         cfg.lspconfig.setup(lspconfig, opts)
       end
