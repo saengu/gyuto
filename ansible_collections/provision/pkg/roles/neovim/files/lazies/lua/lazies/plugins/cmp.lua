@@ -1,25 +1,27 @@
 local M = {
   "hrsh7th/nvim-cmp",
   dependencies = {
-    "hrsh7th/cmp-nvim-lsp", -- cmp_nvim_lsp
-    "neovim/nvim-lspconfig", -- lspconfig
-    "onsails/lspkind-nvim", -- lspkind (VS pictograms)
+    "hrsh7th/cmp-nvim-lsp",
+    "hrsh7th/cmp-path",
+    "hrsh7th/cmp-buffer",
+    "onsails/lspkind-nvim", -- vscode-like pictograms
     {
-        "L3MON4D3/LuaSnip",
-        version = "v2.*",
-        build = "make install_jsregexp",
-        dependencies = {"rafamadriz/friendly-snippets"}, -- Snippets
-        config = function()
-            require("luasnip.loaders.from_vscode").lazy_load()
-            -- https://github.com/rafamadriz/friendly-snippets/blob/main/snippets/go.json
-        end
-    }, {"saadparwaiz1/cmp_luasnip", enabled = true}
+      "L3MON4D3/LuaSnip",
+      version = "v2.*",
+      dependencies = {"rafamadriz/friendly-snippets"}, -- Snippets collection
+      config = function()
+        require("luasnip.loaders.from_vscode").lazy_load()
+      end
+    },
+    "saadparwaiz1/cmp_luasnip",
   },
 }
 
 function M.config()
+  local cmp = require("cmp")
   local luasnip = require("luasnip")
   local types = require("luasnip.util.types")
+  local lspkind = require("lspkind")
 
   -- Display virtual text to indicate snippet has more nodes
   luasnip.config.setup({
@@ -32,9 +34,6 @@ function M.config()
       }
     }
   })
-
-  local cmp = require("cmp")
-  local lspkind = require("lspkind")
 
   cmp.setup({
     snippet = {
@@ -72,15 +71,22 @@ function M.config()
       end, { 'i', 's' }),
     }),
     sources = cmp.config.sources({
-      {name = "nvim_lsp"}, {name = "luasnip"}, {name = "buffer"}
+      {name = "nvim_lsp"},
+      {name = "luasnip"},
+      {name = "buffer"},
+      {name = "path"},
     }),
     formatting = {
       format = lspkind.cmp_format({
-        mode = "symbol_text",
-        maxwidth = 70,
-        show_labelDetails = true
-      })
-    }
+        mode = "symbol_text", -- show only symbol annotations
+        maxwidth = {
+          menu = 50, -- leading text (labelDetails)
+          abbr = 50, -- actual suggestion item
+        },
+        ellipsis_char = "...",
+        show_labelDetails = true,
+      }),
+    },
   })
 end
 
