@@ -17,7 +17,7 @@ end
 ---@param plugin module Plugin config
 ---@param opts   table  Shared options from lazies.lsp
 function M.lspconfig.setup(plugin, opts)
-	plugin.rust_analyzer.setup({})
+	plugin.rust_analyzer.setup(opts)
 end
 
 return M

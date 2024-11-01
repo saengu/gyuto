@@ -56,6 +56,8 @@ return {
     -- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers.
     local ok, cmp = pcall(require, "cmp_nvim_lsp")
     if ok then
+      -- No brackets will be inserted for functions if not override with lsp capabilities.
+      -- TODO: fix https://github.com/hrsh7th/cmp-nvim-lsp/issues/72
       local capabilities = vim.lsp.protocol.make_client_capabilities() -- override default capabilities of cmp
       opts["capabilities"] = cmp.default_capabilities(capabilities)
     end
