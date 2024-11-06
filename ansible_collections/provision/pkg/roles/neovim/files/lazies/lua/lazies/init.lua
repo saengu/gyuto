@@ -34,5 +34,9 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   spec = {import = "lazies.plugins"},
   checker = { enabled = false },
+  ui = {
+    border = "single",
+    backdrop = 100,
+  },
 })
 
