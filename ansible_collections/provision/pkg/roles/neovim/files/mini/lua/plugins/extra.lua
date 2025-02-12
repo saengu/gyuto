@@ -26,6 +26,7 @@ now(function()
   local lspconfig = require('lspconfig')
 
   lspconfig.gopls.setup({})
+  lspconfig.rust_analyzer.setup({})
 
   -- Took from LspAttach official help document
   vim.api.nvim_create_autocmd("LspAttach", {
