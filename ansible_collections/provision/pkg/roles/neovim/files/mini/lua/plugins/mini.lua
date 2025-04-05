@@ -51,7 +51,7 @@ now(function()
     end,
   })
   MiniIcons.mock_nvim_web_devicons()
-  --later(MiniIcons.tweak_lsp_kind)
+  later(MiniIcons.tweak_lsp_kind)
 end)
 
 
@@ -157,7 +157,7 @@ later(function()
       auto_setup = false,
       process_items = function(items, base)
         -- Don't show 'Text' and 'Snippet' suggestions
-        items = vim.tbl_filter(function(x) return x.kind ~= 1 and x.kind ~= 15 end, items)
+        items = vim.tbl_filter(function(x) return x.kind ~= 1 end, items)
         return MiniCompletion.default_process_items(items, base)
       end,
     },
@@ -248,7 +248,18 @@ later(function()
 end)
 
 later(function() require('mini.pairs').setup() end)
-later(function() require('mini.snippets').setup() end)
+
+-- Note: disabled since it conflicts with rustaceanvim.
+--later(function() require('mini.snippets').setup() end)
+later(function()
+  local snippets = require('mini.snippets')
+  snippets.setup({
+    snippets = {
+      snippets.gen_loader.from_lang()
+    }
+  })
+end)
+
 later(function() require('mini.splitjoin').setup() end)
 
 later(function()

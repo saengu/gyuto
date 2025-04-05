@@ -20,19 +20,25 @@ local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 --              https://github.com/echasnovski/mini.nvim/issues/829
 --
 --          └─────────────────────────────────────────────────────────┘
+
 now(function()
   add('neovim/nvim-lspconfig')
 
   local lspconfig = require('lspconfig')
 
   lspconfig.gopls.setup({})
-  lspconfig.rust_analyzer.setup({})
+
+  -- Note: Rust use rustaceanvim plugin instead.
+  --lspconfig.rust_analyzer.setup({})
 
   -- Took from LspAttach official help document
   vim.api.nvim_create_autocmd("LspAttach", {
       callback = function(args)
         local bufnr = args.buf
         local client = vim.lsp.get_client_by_id(args.data.client_id)
+        --client.server_capabilities.completionProvider.triggerCharacters = { '.', ':' }
+
+
         if client.server_capabilities.completionProvider then
           --vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
           -- Set up 'mini.completion' LSP part of completion
@@ -47,6 +53,26 @@ now(function()
   })
 end)
 
+later(function()
+  add('mrcjkb/rustaceanvim')
+
+  --[[
+  vim.g.rustaceanvim = {
+    server = {
+      capabilities = {
+        textDocument = {
+          completion = {
+            completionItem = {
+              snippetSupport = true,
+            },
+          }
+        },
+      },
+    },
+  }
+  --]]
+
+end)
 
 -- ╔═══════════════════════╗
 -- ║ Telescope             ║
