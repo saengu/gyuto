@@ -33,7 +33,9 @@ now(function()
   --lspconfig.rust_analyzer.setup({})
 
   -- Took from LspAttach official help document
+
   vim.api.nvim_create_autocmd("LspAttach", {
+
       callback = function(args)
         local bufnr = args.buf
         local client = vim.lsp.get_client_by_id(args.data.client_id)
@@ -61,6 +63,14 @@ now(function()
           -- Enable inlay hints by default
           vim.lsp.inlay_hint.enable()
           ]]--
+          local map = function(keys, func, desc)
+            vim.keymap.set('n', keys, func, { buffer = bufnr, desc = 'LSP: ' .. desc })
+          end
+          map('<leader>th', function()
+            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+            vim.notify("toggle inlay hint")
+          end, '[T]oggle Inlay [H]ints')
+          vim.lsp.inlay_hint.enable(true)
         end
       end,
   })

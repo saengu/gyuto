@@ -129,16 +129,26 @@ local diagnostic_opts = {
     severity = { min = 'WARN', max = 'ERROR' },
   },
   -- Show virtual text only for errors
-  virtual_text = { severity = { min = 'ERROR', max = 'ERROR' } },
+  virtual_text = {
+    severity = { min = 'ERROR', max = 'ERROR' },
+    prefix = '', --'●',  -- can be a string or a function. disable default prefix which is square block.
+    spacing = 2, -- reduce the space
+  },
   -- Don't update diagnostics when typing
   update_in_insert = false,
 }
 
 vim.diagnostic.config(diagnostic_opts)
 
+vim.fn.sign_define('DiagnosticSignError', { text = '●', texthl = 'DiagnosticError' })
+vim.fn.sign_define('DiagnosticSignWarn',  { text = '●', texthl = 'DiagnosticWarn'  })
+vim.fn.sign_define('DiagnosticSignInfo',  { text = '●', texthl = 'DiagnosticInfo'  })
+vim.fn.sign_define('DiagnosticSignHint',  { text = '●', texthl = 'DiagnosticHint'  })
 --[[
 vim.fn.sign_define('DiagnosticSignError', { text = '🔥', texthl = 'DiagnosticError' })
 vim.fn.sign_define('DiagnosticSignWarn',  { text = '❗️', texthl = 'DiagnosticWarn'  })
 vim.fn.sign_define('DiagnosticSignInfo',  { text = '✨', texthl = 'DiagnosticInfo'  })
 vim.fn.sign_define('DiagnosticSignHint',  { text = '💡', texthl = 'DiagnosticHint'  })
 ]]--
+
+vim.keymap.set("n", "<Leader>ds", vim.diagnostic.open_float, { desc = "Show diagnostic" })
