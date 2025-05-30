@@ -27,6 +27,7 @@ now(function()
   local lspconfig = require('lspconfig')
 
   lspconfig.gopls.setup({})
+  lspconfig.zls.setup({})
 
   -- Note: Rust use rustaceanvim plugin instead.
   --lspconfig.rust_analyzer.setup({})
@@ -38,17 +39,28 @@ now(function()
         local client = vim.lsp.get_client_by_id(args.data.client_id)
         --client.server_capabilities.completionProvider.triggerCharacters = { '.', ':' }
 
-        --[[
         if client.server_capabilities.completionProvider then
-          --vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
+          vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
           -- Set up 'mini.completion' LSP part of completion
-          vim.bo[bufnr].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
+          --vim.bo[bufnr].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
           --vim.bo[bufnr].completefunc = 'v:lua.MiniCompletion.completefunc_lsp'
           -- Mappings are created globally with `<Leader>l` prefix (for simplicity)
         end
-        ]]--
+
         if client.server_capabilities.definitionProvider then
           vim.bo[bufnr].tagfunc = "v:lua.vim.lsp.tagfunc"
+        end
+
+        if client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
+          --[[
+          -- Toggle inlay hints
+          map('<leader>th', function()
+            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+          end, '[T]oggle Inlay [H]ints')
+
+          -- Enable inlay hints by default
+          vim.lsp.inlay_hint.enable()
+          ]]--
         end
       end,
   })
@@ -105,6 +117,19 @@ later(function()
   --[[
   vim.g.rustaceanvim = {
     server = {
+      settings = {
+        ["rust-analyzer"] = {
+          inlayHints = {
+            includeInlayEnumMemberValueHints = true,
+            includeInlayFunctionLikeReturnTypeHints = true,
+            includeInlayFunctionParameterTypeHints = true,
+            includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+            includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+            includeInlayPropertyDeclarationTypeHints = true,
+            includeInlayVariableTypeHints = false,
+          },
+        },
+      },
       capabilities = {
         textDocument = {
           completion = {
@@ -116,7 +141,7 @@ later(function()
       },
     },
   }
-  --]]
+  ]]--
 
 end)
 
