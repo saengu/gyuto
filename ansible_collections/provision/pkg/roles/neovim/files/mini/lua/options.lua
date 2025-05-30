@@ -127,6 +127,28 @@ local diagnostic_opts = {
     priority = 9999,
     -- Only for warnings and errors
     severity = { min = 'WARN', max = 'ERROR' },
+    --[[
+    text = {
+      [vim.diagnostic.severity.ERROR] = "",
+      [vim.diagnostic.severity.WARN]  = "",
+      [vim.diagnostic.severity.HINT]  = "󰟃",
+      [vim.diagnostic.severity.INFO]  = "",
+    },
+    ]]--
+    --[[
+    text = {
+      [vim.diagnostic.severity.ERROR] = '●',
+      [vim.diagnostic.severity.WARN]  = '●',
+      [vim.diagnostic.severity.HINT]  = '●',
+      [vim.diagnostic.severity.INFO]  = '●',
+    },
+    ]]--
+    text = {
+      [vim.diagnostic.severity.ERROR] = '🔥',
+      [vim.diagnostic.severity.WARN]  = '❗️'
+      [vim.diagnostic.severity.HINT]  = '💡',
+      [vim.diagnostic.severity.INFO]  = '✨',
+    },
   },
   -- Show virtual text only for errors
   virtual_text = {
@@ -139,16 +161,5 @@ local diagnostic_opts = {
 }
 
 vim.diagnostic.config(diagnostic_opts)
-
-vim.fn.sign_define('DiagnosticSignError', { text = '●', texthl = 'DiagnosticError' })
-vim.fn.sign_define('DiagnosticSignWarn',  { text = '●', texthl = 'DiagnosticWarn'  })
-vim.fn.sign_define('DiagnosticSignInfo',  { text = '●', texthl = 'DiagnosticInfo'  })
-vim.fn.sign_define('DiagnosticSignHint',  { text = '●', texthl = 'DiagnosticHint'  })
---[[
-vim.fn.sign_define('DiagnosticSignError', { text = '🔥', texthl = 'DiagnosticError' })
-vim.fn.sign_define('DiagnosticSignWarn',  { text = '❗️', texthl = 'DiagnosticWarn'  })
-vim.fn.sign_define('DiagnosticSignInfo',  { text = '✨', texthl = 'DiagnosticInfo'  })
-vim.fn.sign_define('DiagnosticSignHint',  { text = '💡', texthl = 'DiagnosticHint'  })
-]]--
 
 vim.keymap.set("n", "<Leader>ds", vim.diagnostic.open_float, { desc = "Show diagnostic" })
