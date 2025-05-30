@@ -66,10 +66,13 @@ keymap('n', '<leader>fb', ":lua require('telescope.builtin').buffers()<cr>", {no
 keymap('n', '<leader>fg',  ":lua require('telescope.builtin').live_grep()<cr>", {noremap = true, silent = true, desc = "Live Grep"})
 keymap('n', '<leader>fh', ":lua require('telescope.builtin').help_tags()<cr>", {noremap = true, silent = true, desc = "Help Tags"})
 
+--- Move <Tab> mapping to plugin.cmp handled by nvim-cmp
+---
 -- Make <Tab> work for snippets
 -- Move inside completion list with <TAB>
-vim.keymap.set('i', '<Tab>', [[pumvisible() ? "\<C-n>" : "\<Tab>"]], { expr = true })
-vim.keymap.set('i', '<S-Tab>', [[pumvisible() ? "\<C-p>" : "\<S-Tab>"]], { expr = true })
+--vim.keymap.set('i', '<Tab>', [[pumvisible() ? "\<C-n>" : "\<Tab>"]], { expr = true })
+--vim.keymap.set('i', '<S-Tab>', [[pumvisible() ? "\<C-p>" : "\<S-Tab>"]], { expr = true })
+
 --[[
 -- Took from offical vim.snippt function help document
 vim.keymap.set({ 'i', 's' }, '<Tab>', function()

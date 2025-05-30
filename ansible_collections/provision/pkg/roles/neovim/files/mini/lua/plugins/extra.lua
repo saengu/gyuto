@@ -38,7 +38,7 @@ now(function()
         local client = vim.lsp.get_client_by_id(args.data.client_id)
         --client.server_capabilities.completionProvider.triggerCharacters = { '.', ':' }
 
-
+        --[[
         if client.server_capabilities.completionProvider then
           --vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
           -- Set up 'mini.completion' LSP part of completion
@@ -46,12 +46,58 @@ now(function()
           --vim.bo[bufnr].completefunc = 'v:lua.MiniCompletion.completefunc_lsp'
           -- Mappings are created globally with `<Leader>l` prefix (for simplicity)
         end
+        ]]--
         if client.server_capabilities.definitionProvider then
           vim.bo[bufnr].tagfunc = "v:lua.vim.lsp.tagfunc"
         end
       end,
   })
 end)
+
+--[[
+later(function()
+  add('hrsh7th/nvim-cmp')
+  add('hrsh7th/cmp-nvim-lsp')
+  add('hrsh7th/cmp-buffer')
+  add('hrsh7th/cmp-path')
+  add('hrsh7th/cmp-cmdline')
+
+  add('L3MON4D3/LuaSnip')
+  add('saadparwaiz1/cmp_luasnip')
+
+
+  local cmp = require('cmp')
+  cmp.setup({
+    snippet = {
+      expand = function(args)
+        require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+      end
+    },
+    mapping = cmp.mapping.preset.insert({
+      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.abort(),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+      ["<Tab>"] = cmp.mapping(
+        function(fallback)
+            if cmp.visible() then
+                cmp.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true })
+            elseif require("luasnip").expand_or_jumpable() then
+                vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
+            else
+                fallback()
+            end
+        end, { "i", "s" }
+      ),
+    }),
+    sources = cmp.config.sources({
+      { name = 'nvim_lsp' },
+      { name = 'luasnip'  }, -- For luasnip users.
+    })
+  })
+end)
+]]--
 
 later(function()
   add('mrcjkb/rustaceanvim')

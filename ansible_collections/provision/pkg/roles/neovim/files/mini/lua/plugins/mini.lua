@@ -150,27 +150,6 @@ end)
 later(function() require('mini.colors').setup() end)
 later(function() require('mini.comment').setup() end)
 
-later(function()
-  require('mini.completion').setup({
-    lsp_completion = {
-      source_func = 'omnifunc',
-      auto_setup = false,
-      process_items = function(items, base)
-        -- Don't show 'Text' and 'Snippet' suggestions
-        items = vim.tbl_filter(function(x) return x.kind ~= 1 end, items)
-        return MiniCompletion.default_process_items(items, base)
-      end,
-    },
-    window = {
-      info = { border = 'solid' },
-      signature = { border = 'solid' },
-    },
-  })
-  if vim.fn.has('nvim-0.11') == 1 then
-    vim.opt.completeopt:append('fuzzy') -- Use fuzzy matching for built-in completion
-  end
-end)
-
 later(function() require('mini.cursorword').setup() end)
 
 later(function()
@@ -203,7 +182,10 @@ later(function() require('mini.jump').setup() end)
 later(function()
   local jump2d = require('mini.jump2d')
   jump2d.setup({
-    spotter = jump2d.gen_pattern_spotter('[^%s%p]+'),
+    -- TODO remove below line as it is deprecated.
+    -- spotter = jump2d.gen_pattern_spotter('[^%s%p]+'),
+
+    spotter = jump2d.gen_spotter.pattern('[^%s%p]+'),
     view = { dim = true, n_steps_ahead = 2 },
   })
 end)
@@ -248,17 +230,6 @@ later(function()
 end)
 
 later(function() require('mini.pairs').setup() end)
-
--- Note: disabled since it conflicts with rustaceanvim.
---later(function() require('mini.snippets').setup() end)
-later(function()
-  local snippets = require('mini.snippets')
-  snippets.setup({
-    snippets = {
-      snippets.gen_loader.from_lang()
-    }
-  })
-end)
 
 later(function() require('mini.splitjoin').setup() end)
 
