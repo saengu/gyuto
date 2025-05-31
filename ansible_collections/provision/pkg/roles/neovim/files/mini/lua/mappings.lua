@@ -61,10 +61,10 @@ end
 -- ╔══════════════════════╗
 -- ║  Telescope Keymaps   ║
 -- ╚══════════════════════╝
-keymap('n', '<leader>ff', ":lua require('telescope.builtin').find_files({ find_command = {'rg', '--files', '--hidden', '-g', '!.git' }})<cr>", {noremap = true, silent = true, desc = "Find files"})
-keymap('n', '<leader>fb', ":lua require('telescope.builtin').buffers()<cr>", {noremap = true, silent = true, desc = "Buffers"})
-keymap('n', '<leader>fg',  ":lua require('telescope.builtin').live_grep()<cr>", {noremap = true, silent = true, desc = "Live Grep"})
-keymap('n', '<leader>fh', ":lua require('telescope.builtin').help_tags()<cr>", {noremap = true, silent = true, desc = "Help Tags"})
+keymap('n', '<Leader>ff', ":lua require('telescope.builtin').find_files({ find_command = {'rg', '--files', '--hidden', '-g', '!.git' }})<cr>", {noremap = true, silent = true, desc = "Find files"})
+keymap('n', '<Leader>fb', ":lua require('telescope.builtin').buffers()<cr>", {noremap = true, silent = true, desc = "Buffers"})
+keymap('n', '<Leader>fg',  ":lua require('telescope.builtin').live_grep()<cr>", {noremap = true, silent = true, desc = "Live Grep"})
+keymap('n', '<Leader>fh', ":lua require('telescope.builtin').help_tags()<cr>", {noremap = true, silent = true, desc = "Help Tags"})
 
 --- Move <Tab> mapping to plugin.cmp handled by nvim-cmp
 ---
@@ -91,9 +91,21 @@ vim.keymap.set('n', '<space>d', vim.diagnostic.setloclist, {desc = "Add buffer d
 -- ╔══════════════════════╗
 -- ║  Helix Keymaps       ║
 -- ╚══════════════════════╝
-keymap('n', '<space>/', "<cmd>lua require('telescope.builtin').live_grep()<cr>", {noremap = true, silent = true, desc = "Live Grep"})
-keymap('n', '<space>b', ":lua require('telescope.builtin').buffers()<cr>", {noremap = true, silent = true, desc = "Buffers"})
-keymap('n', '<space>f', ":lua require('telescope.builtin').find_files({ find_command = {'rg', '--files', '--hidden', '-g', '!.git' }})<cr>", {noremap = true, silent = true, desc = "Find Files"})
+local telescope = require('telescope.builtin')
+keymap('n', '<Space>/', telescope.live_grep, {noremap = true, silent = true, desc = "Global search in workspace folder"})
+--keymap('n', '<Space>b', ":lua require('telescope.builtin').buffers()<cr>", {noremap = true, silent = true, desc = "Open buffer picker"})
+keymap('n', '<Space>b', telescope.buffers, {noremap = true, silent = true, desc = "Open buffer picker"})
+keymap('n', '<Space>d', telescope.diagnostics, {noremap = true, silent = true, desc = "Open diagnostic picker"})
+keymap('n', '<Space>f', function()
+  telescope.find_files({ find_command = {'rg', '--files', '--hidden', '--iglob', '!.git' }})
+end, {noremap = true, silent = true, desc = "Open file picker"})
+keymap('n', '<Space>j', telescope.jumplist, {noremap = true, silent = true, desc = "Open buffer picker"})
+keymap('n', "<Space>'", telescope.pickers, {noremap = true, silent = true, desc = "Open last picker"})
+keymap('n', '<Space>q', telescope.quickfix, {noremap = true, silent = true, desc = "Open quickfix picker"})
+keymap('n', '<Space>r', vim.lsp.buf.rename, {noremap = true, silent = true, desc = "Rename symbol"})
+keymap('n', '<Space>s', telescope.lsp_document_symbols, {noremap = true, silent = true, desc = "Open symbol picker"})
+keymap('n', '<Space>S', telescope.lsp_workspace_symbols, {noremap = true, silent = true, desc = "Open symbol picker for workspace"})
+keymap('n', '<Space>w', "<C-w>", {remap = true, desc = "Window"})
 
 keymap('n', 'gD', vim.lsp.buf.declaration, { desc = "Go to Declaration" })
 keymap('n', 'gd', vim.lsp.buf.definition, { desc = "Go to Definition" })
