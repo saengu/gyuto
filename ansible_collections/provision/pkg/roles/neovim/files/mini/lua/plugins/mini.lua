@@ -119,19 +119,6 @@ later(function()
         },
 
         clues = {
-            --{ mode = "n", keys = "<Leader>b", desc = "Open buffer picker " },
-            --{ mode = "n", keys = "<Leader>f", desc = " Find" },
-            --{ mode = "n", keys = "<Leader>g", desc = "󰊢 Git" },
-            --{ mode = "n", keys = "<Leader>i", desc = "󰏪 Insert" },
-            --{ mode = "n", keys = "<Leader>l", desc = "󰘦 LSP" },
-            --{ mode = "n", keys = "<Leader>m", desc = " Mini" },
-            --{ mode = "n", keys = "<Leader>q", desc = " NVim" },
-            --{ mode = "n", keys = "<Leader>s", desc = "󰆓 Session" },
-            --{ mode = "n", keys = "<Leader>u", desc = "󰔃 UI" },
-            --{ mode = "n", keys = "<Leader>w", desc = " Window" },
-
-            { mode = 'x', keys = '<Leader>l', desc = '+LSP' },
-
             require("mini.clue").gen_clues.g(),
             require("mini.clue").gen_clues.builtin_completion(),
             require("mini.clue").gen_clues.marks(),

@@ -91,19 +91,26 @@ vim.keymap.set('n', '<space>d', vim.diagnostic.setloclist, {desc = "Add buffer d
 -- ╔══════════════════════╗
 -- ║  Helix Keymaps       ║
 -- ╚══════════════════════╝
+
+--- Space Mode
 local telescope = require('telescope.builtin')
 keymap('n', '<Space>/', telescope.live_grep, {noremap = true, silent = true, desc = "Global search in workspace folder"})
---keymap('n', '<Space>b', ":lua require('telescope.builtin').buffers()<cr>", {noremap = true, silent = true, desc = "Open buffer picker"})
+keymap('n', "<Space>'", telescope.resume,    {noremap = true, silent = true, desc = "Open last fuzzy picker"})
+keymap('n', '<Space>a', vim.lsp.buf.code_action, {noremap = true, silent = true, desc = "Apply code action[TODO]"})
 keymap('n', '<Space>b', telescope.buffers, {noremap = true, silent = true, desc = "Open buffer picker"})
+keymap('n', '<Space>c', telescope.buffers, {noremap = true, silent = true, desc = "Comment/uncomment selections[TODO]"})
+keymap('n', '<Space>C', telescope.buffers, {noremap = true, silent = true, desc = "Block comment/uncomment selections[TODO]"})
 keymap('n', '<Space>d', telescope.diagnostics, {noremap = true, silent = true, desc = "Open diagnostic picker"})
 keymap('n', '<Space>f', function()
   telescope.find_files({ find_command = {'rg', '--files', '--hidden', '--iglob', '!.git' }})
 end, {noremap = true, silent = true, desc = "Open file picker"})
-keymap('n', '<Space>j', telescope.jumplist, {noremap = true, silent = true, desc = "Open buffer picker"})
-keymap('n', "<Space>'", telescope.pickers, {noremap = true, silent = true, desc = "Open last picker"})
+keymap('n', '<Space>g', telescope.git_status, {noremap = true, silent = true, desc = "Open changed files picker"})
+keymap('n', '<Space>h', telescope.git_status, {noremap = true, silent = true, desc = "Highlight symbol reference[TODO]"})
+keymap('n', '<Space>j', telescope.jumplist,   {noremap = true, silent = true, desc = "Open jumplist picker"})
+keymap('n', '<Space>k', telescope.jumplist,   {noremap = true, silent = true, desc = "Show documentation for item under cursor[TODO]"})
 keymap('n', '<Space>q', telescope.quickfix, {noremap = true, silent = true, desc = "Open quickfix picker"})
 keymap('n', '<Space>r', vim.lsp.buf.rename, {noremap = true, silent = true, desc = "Rename symbol"})
-keymap('n', '<Space>s', telescope.lsp_document_symbols, {noremap = true, silent = true, desc = "Open symbol picker"})
+keymap('n', '<Space>s', telescope.lsp_document_symbols,  {noremap = true, silent = true, desc = "Open symbol picker"})
 keymap('n', '<Space>S', telescope.lsp_workspace_symbols, {noremap = true, silent = true, desc = "Open symbol picker for workspace"})
 keymap('n', '<Space>w', "<C-w>", {remap = true, desc = "Window"})
 
