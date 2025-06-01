@@ -197,7 +197,7 @@ now(function()
       local first_arg = vim.v.argv[3]
       if first_arg and vim.fn.isdirectory(first_arg) == 1 then
         -- Vim creates a buffer for folder. Close it.
-        vim.cmd(":bd 1")
+        vim.cmd(":bw 1")
         require("telescope.builtin").find_files({ search_dirs = { first_arg } })
       end
     end,
