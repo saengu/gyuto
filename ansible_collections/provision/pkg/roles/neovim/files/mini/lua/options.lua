@@ -161,5 +161,3 @@ local diagnostic_opts = {
 }
 
 vim.diagnostic.config(diagnostic_opts)
-
-vim.keymap.set("n", "<Leader>ds", vim.diagnostic.open_float, { desc = "Show diagnostic" })

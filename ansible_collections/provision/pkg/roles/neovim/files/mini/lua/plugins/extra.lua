@@ -54,23 +54,13 @@ now(function()
         end
 
         if client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
-          --[[
-          -- Toggle inlay hints
-          map('<leader>th', function()
-            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-          end, '[T]oggle Inlay [H]ints')
-
-          -- Enable inlay hints by default
-          vim.lsp.inlay_hint.enable()
-          ]]--
           local map = function(keys, func, desc)
             vim.keymap.set('n', keys, func, { buffer = bufnr, desc = 'LSP: ' .. desc })
           end
-          map('<leader>th', function()
+          map('<Leader>lI', function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-            vim.notify("toggle inlay hint")
-          end, '[T]oggle Inlay [H]ints')
-          vim.lsp.inlay_hint.enable(true)
+          end, 'Toggle Inlay Hints')
+          --vim.lsp.inlay_hint.enable(true)
         end
       end,
   })

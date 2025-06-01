@@ -8,13 +8,17 @@
 -- NOTE: Most basic mappings come from 'mini.basics'
 
 local keymap = vim.keymap.set
+local telescope = require('telescope.builtin')
 
 -- ╔═══════════════════════╗
 -- ║    General Keymaps    ║
 -- ╚═══════════════════════╝
-keymap("n", "<leader>q",  "<cmd>wqa<cr>", { desc = 'Quit' })
-keymap("n", "<leader>Q",  "<cmd>qa!<cr>", { desc = 'Force Quit' })
-keymap("n", "<leader>mu", require('mini.deps').update, { desc = 'Update Plugins' })
+keymap("n", "<Leader>mu", require('mini.deps').update, { desc = 'Update Plugins' })
+keymap('n', '<Leader>mr', telescope.reloader,    {noremap = true, silent = true, desc = "Reload Lua modules"})
+keymap("n", "<Leader>q",  "<cmd>wqa<cr>", { desc = 'Quit' })
+keymap("n", "<Leader>Q",  "<cmd>qa!<cr>", { desc = 'Force Quit' })
+keymap('n', '<Leader>T', telescope.builtin, {noremap = true, silent = true, desc = "Show Telescope builtin pickers"})
+keymap('n', '<Leader>t', telescope.treesitter, {noremap = true, silent = true, desc = "Open tree-sitter picker"})
 keymap("i", "<C-S-v>",    "<C-r><C-o>*",  { desc = 'Paste from system in insert mode' })
 
 
@@ -43,10 +47,12 @@ end, { desc = 'Load Session' })
 -- ╚══════════════════════╝
 keymap("n", "<Leader>ba", "<cmd>b#<cr>", { desc = 'Alternate buffer' })
 keymap("n", "<Leader>bd", "<cmd>bd<cr>", { desc = 'Close buffer' })
-keymap("n", "<Leader>bq", "<cmd>%bd|e#<cr>", { desc = 'Close other buffers' })
+keymap("n", "<Leader>bd", "<cmd>bd<cr>", { desc = 'Close buffer' })
+keymap("n", "<Leader>bw", "<cmd>bw<cr>", { desc = 'Wipeout buffer' })
 keymap("n", "<S-l>", "<cmd>bnext<cr>", { desc = 'Next buffer' })
 keymap("n", "<S-h>", "<cmd>bprevious<cr>", { desc = 'Previous buffer' })
 keymap("n", "<TAB>", "<C-^>", { desc = "Alternate buffers" })
+keymap("n", "<S-Tab>", "<cmd>bw<cr>", { desc = 'Wipeout buffer' })
 
 -- Format Buffer with and without LSP
 keymap("n", "<Leader>bf", function()
@@ -95,7 +101,6 @@ end, { expr = true })
 
 --- Space Mode
 --- Most often used keymap and only one level
-local telescope = require('telescope.builtin')
 keymap('n', '<Space>/', telescope.live_grep, {noremap = true, silent = true, desc = "Global search in workspace folder"})
 keymap('n', "<Space>'", telescope.resume,    {noremap = true, silent = true, desc = "Open last fuzzy picker"})
 keymap('n', '<Space>a', vim.lsp.buf.code_action, {noremap = true, silent = true, desc = "Apply code action[TODO]"})
@@ -109,8 +114,10 @@ end, {noremap = true, silent = true, desc = "Open file picker"})
 keymap('n', '<Space>g', telescope.git_status, {noremap = true, silent = true, desc = "Open changed files picker"})
 keymap('n', '<Space>h', telescope.git_status, {noremap = true, silent = true, desc = "Highlight symbol reference[TODO]"})
 keymap('n', '<Space>j', telescope.jumplist,   {noremap = true, silent = true, desc = "Open jumplist picker"})
-keymap('n', '<Space>k', telescope.jumplist,   {noremap = true, silent = true, desc = "Show documentation for item under cursor[TODO]"})
+keymap('n', '<Space>k', vim.lsp.buf.signature_help, {noremap = true, silent = true, desc = "Show signature help"})
+keymap('n', '<Space>K', vim.lsp.buf.hover,    {noremap = true, silent = true, desc = "Show documentation for item under cursor"})
 keymap('n', '<Space>l', telescope.loclist,    {noremap = true, silent = true, desc = "Open current window's location list picker"})
+keymap('n', '<Space>p', telescope.builtin,    {noremap = true, silent = true, desc = "Open current window's location list picker"})
 keymap('n', '<Space>q', telescope.quickfix,   {noremap = true, silent = true, desc = "Open quickfix picker"})
 keymap('n', '<Space>Q', telescope.quickfixhistory, {noremap = true, silent = true, desc = "Open quickfix history picker"})
 keymap('n', '<Space>r', vim.lsp.buf.rename, {noremap = true, silent = true, desc = "Rename symbol"})
@@ -118,9 +125,8 @@ keymap('n', '<Space>s', telescope.lsp_document_symbols,  {noremap = true, silent
 keymap('n', '<Space>S', telescope.lsp_workspace_symbols, {noremap = true, silent = true, desc = "Open symbol picker for workspace"})
 keymap('n', '<Space>w', "<C-w>", {remap = true, desc = "Window"})
 
-keymap('n', 'gD', vim.lsp.buf.declaration, { desc = "Go to Declaration" })
-keymap('n', 'gd', vim.lsp.buf.definition, { desc = "Go to Definition" })
-keymap('n', 'gi', vim.lsp.buf.implementation, { desc = "Go to Implementation"})
+keymap({'i', 'n'}, '<C-k>', vim.lsp.buf.signature_help, {noremap = true, silent = true, desc = "Show signature help"})
+keymap({'i', 'n'}, '<C-K>', vim.lsp.buf.hover,    {noremap = true, silent = true, desc = "Show documentation for item under cursor"})
 
 -- ╔══════════════════════╗
 -- ║  Git Keymaps         ║
@@ -131,6 +137,19 @@ keymap('n', '<Leader>gb', telescope.git_bcommits,   {noremap = true, silent = tr
 keymap({'n','v'}, '<Leader>gB', telescope.git_branches,   {noremap = true, silent = true, desc = "Open branches picker"})
 keymap('n', '<Leader>gs', telescope.git_status,   {noremap = true, silent = true, desc = "Show current changes by file"})
 keymap('n', '<Leader>gS', telescope.git_stash,   {noremap = true, silent = true, desc = "Stash items in current repository"})
+
+-- ╔═══════════════════════════╗
+-- ║  Language Server Keymaps  ║
+-- ╚═══════════════════════════╝
+keymap('n', '<Leader>lc', telescope.lsp_incoming_calls, { desc = "Open incoming calls picker" })
+keymap('n', '<Leader>lC', telescope.lsp_incoming_calls, { desc = "Open outgoing calls picker" })
+keymap('n', '<Leader>ld', telescope.diagnostics, {noremap = true, silent = true, desc = "Open diagnostic picker"})
+keymap('n', '<Leader>lr', telescope.lsp_references, { desc = "Open references picker" })
+keymap('n', '<Leader>ls', telescope.lsp_document_symbols,  {noremap = true, silent = true, desc = "Open symbol picker"})
+keymap('n', '<Leader>lS', telescope.lsp_workspace_symbols, {noremap = true, silent = true, desc = "Open symbol picker for workspace"})
+keymap('n', '<Leader>lD', vim.lsp.buf.definition, { desc = "Go to definition" })
+keymap('n', '<Leader>li', vim.lsp.buf.implementation, { desc = "Go to implementation"})
+keymap('n', '<Leader>lt', telescope.lsp_type_definitions, { desc = "Go to type definition"})
 
 --[[
 keymap('n', '<M-k>', vim.lsp.buf.signature_help, { desc = "Signature Help" })

@@ -79,8 +79,8 @@ later(function()
             -- Leader triggers
             { mode = "n", keys = "<Leader>" },
             { mode = "x", keys = "<Leader>" },
-            { mode = "n", keys = "<space>" },
-            { mode = "x", keys = "<space>" },
+            { mode = "n", keys = "<Space>" },
+            { mode = "x", keys = "<Space>" },
 
             -- Mini Basics
             { mode = 'n', keys = "\\" },      -- mini.basics
@@ -121,7 +121,10 @@ later(function()
         clues = {
             { mode = "n", keys = "<Leader>b", desc = "Manage buffers →" },
             { mode = "n", keys = "<Leader>g", desc = "Git operations →" },
-            { mode = "n", keys = "<Leader>l", desc = "Language server actions " },
+            { mode = "n", keys = "<Leader>l", desc = "Language server actions →" },
+            { mode = "n", keys = "<Leader>m", desc = "Plugin actions →" },
+            { mode = "n", keys = "<Leader>o", desc = "Text edit operators →" },
+            { mode = "n", keys = "<Leader>s", desc = "Manage sessions →" },
             --{ mode = "n", keys = "<Leader>f", desc = " Find" },
             --{ mode = "n", keys = "<Leader>i", desc = "󰏪 Insert" },
             --{ mode = "n", keys = "<Leader>m", desc = " Mini" },
