@@ -114,8 +114,8 @@ end, {noremap = true, silent = true, desc = "Open file picker"})
 keymap('n', '<Space>g', telescope.git_status, {noremap = true, silent = true, desc = "Open changed files picker"})
 keymap('n', '<Space>h', telescope.git_status, {noremap = true, silent = true, desc = "Highlight symbol reference[TODO]"})
 keymap('n', '<Space>j', telescope.jumplist,   {noremap = true, silent = true, desc = "Open jumplist picker"})
-keymap('n', '<Space>k', vim.lsp.buf.signature_help, {noremap = true, silent = true, desc = "Show signature help"})
-keymap('n', '<Space>K', vim.lsp.buf.hover,    {noremap = true, silent = true, desc = "Show documentation for item under cursor"})
+--keymap('n', '<Space>k', vim.lsp.buf.signature_help, {noremap = true, silent = true, desc = "Show signature help"})
+keymap('n', '<Space>k', vim.lsp.buf.hover,    {noremap = true, silent = true, desc = "Show documentation for item under cursor"})
 keymap('n', '<Space>l', telescope.loclist,    {noremap = true, silent = true, desc = "Open current window's location list picker"})
 keymap('n', '<Space>p', telescope.builtin,    {noremap = true, silent = true, desc = "Open current window's location list picker"})
 keymap('n', '<Space>q', telescope.quickfix,   {noremap = true, silent = true, desc = "Open quickfix picker"})
@@ -125,8 +125,8 @@ keymap('n', '<Space>s', telescope.lsp_document_symbols,  {noremap = true, silent
 keymap('n', '<Space>S', telescope.lsp_workspace_symbols, {noremap = true, silent = true, desc = "Open symbol picker for workspace"})
 keymap('n', '<Space>w', "<C-w>", {remap = true, desc = "Window"})
 
-keymap({'i', 'n'}, '<C-k>', vim.lsp.buf.signature_help, {noremap = true, silent = true, desc = "Show signature help"})
-keymap({'i', 'n'}, '<C-K>', vim.lsp.buf.hover,    {noremap = true, silent = true, desc = "Show documentation for item under cursor"})
+--keymap({'i', 'n'}, '<C-k>', vim.lsp.buf.signature_help, {noremap = true, silent = true, desc = "Show signature help"})
+keymap({'i', 'n'}, '<C-k>', vim.lsp.buf.hover,    {noremap = true, silent = true, desc = "Show documentation for item under cursor"})
 
 -- ╔══════════════════════╗
 -- ║  Git Keymaps         ║
