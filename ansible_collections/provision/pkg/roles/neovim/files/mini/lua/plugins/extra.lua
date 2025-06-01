@@ -55,7 +55,7 @@ now(function()
 
         if client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
           local map = function(keys, func, desc)
-            vim.keymap.set('n', keys, func, { buffer = bufnr, desc = 'LSP: ' .. desc })
+            vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
           end
           map('<Leader>lI', function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())

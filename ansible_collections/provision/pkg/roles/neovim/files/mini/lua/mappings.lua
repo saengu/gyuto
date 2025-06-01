@@ -147,8 +147,8 @@ keymap('n', '<Leader>ld', telescope.diagnostics, {noremap = true, silent = true,
 keymap('n', '<Leader>lr', telescope.lsp_references, { desc = "Open references picker" })
 keymap('n', '<Leader>ls', telescope.lsp_document_symbols,  {noremap = true, silent = true, desc = "Open symbol picker"})
 keymap('n', '<Leader>lS', telescope.lsp_workspace_symbols, {noremap = true, silent = true, desc = "Open symbol picker for workspace"})
-keymap('n', '<Leader>lD', vim.lsp.buf.definition, { desc = "Go to definition" })
-keymap('n', '<Leader>li', vim.lsp.buf.implementation, { desc = "Go to implementation"})
+keymap('n', '<Leader>lD', telescope.lsp_definitions, { desc = "Go to definition" })
+keymap('n', '<Leader>li', telescope.lsp_implementations, { desc = "Go to implementation"})
 keymap('n', '<Leader>lt', telescope.lsp_type_definitions, { desc = "Go to type definition"})
 
 --[[
