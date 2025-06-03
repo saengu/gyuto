@@ -74,6 +74,7 @@ later(function() require('mini.bracketed').setup() end)
 later(function() require('mini.bufremove').setup() end)
 
 later(function()
+    local mappings = require('mappings')
     require("mini.clue").setup({
         triggers = {
             -- Leader triggers
@@ -119,12 +120,18 @@ later(function()
         },
 
         clues = {
-            { mode = "n", keys = "<Leader>b", desc = "Manage buffers →" },
-            { mode = "n", keys = "<Leader>g", desc = "Git operations →" },
-            { mode = "n", keys = "<Leader>l", desc = "Language server actions →" },
-            { mode = "n", keys = "<Leader>m", desc = "Plugin actions →" },
-            { mode = "n", keys = "<Leader>o", desc = "Text edit operators →" },
-            { mode = "n", keys = "<Leader>s", desc = "Manage sessions →" },
+            mappings.buffer(),
+            mappings.git(),
+            mappings.helix(),
+            mappings.lsp(),
+            mappings.plugin(),
+            mappings.session(),
+
+            --{ mode = "n", keys = "<Leader>b", desc = "Manage buffers →" },
+            --{ mode = "n", keys = "<Leader>g", desc = "Git operations →" },
+            --{ mode = "n", keys = "<Leader>l", desc = "Language server actions →" },
+            --{ mode = "n", keys = "<Leader>m", desc = "Plugin actions →" },
+            --{ mode = "n", keys = "<Leader>s", desc = "Manage sessions →" },
             --{ mode = "n", keys = "<Leader>f", desc = " Find" },
             --{ mode = "n", keys = "<Leader>i", desc = "󰏪 Insert" },
             --{ mode = "n", keys = "<Leader>m", desc = " Mini" },
