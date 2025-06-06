@@ -27,7 +27,7 @@ function M.plugin()
   keymap("n", "<Leader>mu", require('mini.deps').update, { desc = 'Update Plugins' })
   keymap('n', '<Leader>mr', telescope.reloader,    {noremap = true, silent = true, desc = "Reload Lua modules"})
 
-  return { mode = "n", keys = "<Leader>l", desc = "Language server actions →" }
+  return { mode = "n", keys = "<Leader>m", desc = "Manage plugins →" }
 end
 
 
@@ -141,6 +141,8 @@ function M.helix()
   keymap('n', '<Space>s', telescope.lsp_document_symbols,  {noremap = true, silent = true, desc = "Open symbol picker"})
   keymap('n', '<Space>S', telescope.lsp_workspace_symbols, {noremap = true, silent = true, desc = "Open symbol picker for workspace"})
   keymap('n', '<Space>w', "<C-w>", {remap = true, desc = "Window"})
+
+  return {}
 end
 
 
@@ -193,5 +195,12 @@ keymap('n', '<localleader>f', function()
 end, { desc = "Format Buffer"})
 --]]
 
+--[[
+local function map(mode, lhs, rhs, desc, opts)
+    opts = opts or { slient = true }
+    opts.desc = desc
+    vim.keymap.set(mode, lhs, rhs, opts)
+end
+]]--
 
 return M
