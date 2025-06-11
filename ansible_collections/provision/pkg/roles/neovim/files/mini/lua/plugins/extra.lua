@@ -224,6 +224,9 @@ now(function()
 --  add('Shatur/neovim-ayu')
     add('scottmckendry/cyberdream.nvim')
 
+    vim.api.nvim_set_hl(0, "LspReferenceText",  { bg = "#000080", fg = "#FFFFFF" }) -- Dark blue background, white text
+    vim.api.nvim_set_hl(0, "LspReferenceRead",  { bg = "#008000", fg = "#FFFFFF" })   -- Dark green background, white text
+    vim.api.nvim_set_hl(0, "LspReferenceWrite", { bg = "#800000", fg = "#FFFFFF" })  -- Dark red background, white text
 --   Set color scheme
 --   vim.cmd('colorscheme catppuccin')
 --   vim.cmd('colorscheme gruvbox-material')
