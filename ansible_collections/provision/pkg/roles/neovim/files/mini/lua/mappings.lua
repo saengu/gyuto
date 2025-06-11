@@ -120,11 +120,12 @@ end, { expr = true })
 function M.helix()
   keymap('n', '<Space>/', telescope.live_grep, {noremap = true, silent = true, desc = "Global search in workspace folder"})
   keymap('n', "<Space>'", telescope.resume,    {noremap = true, silent = true, desc = "Open last fuzzy picker"})
-  keymap('n', '<Space>a', vim.lsp.buf.code_action, {noremap = true, silent = true, desc = "Apply code action[TODO]"})
+  keymap('n', '<Space>a', vim.lsp.buf.code_action, {noremap = true, silent = true, desc = "Apply code action"})
   keymap('n', '<Space>b', telescope.buffers, {noremap = true, silent = true, desc = "Open buffer picker"})
   keymap('n', '<Space>c', telescope.buffers, {noremap = true, silent = true, desc = "Comment/uncomment selections[TODO]"})
   keymap('n', '<Space>C', telescope.buffers, {noremap = true, silent = true, desc = "Block comment/uncomment selections[TODO]"})
-  keymap('n', '<Space>d', telescope.diagnostics, {noremap = true, silent = true, desc = "Open diagnostic picker"})
+  keymap('n', '<Space>d', vim.diagnostic.open_float, {noremap = true, silent = true, desc = "Show diagnostic message"})
+  keymap('n', '<Space>D', telescope.diagnostics, {noremap = true, silent = true, desc = "Open diagnostic picker"})
   keymap('n', '<Space>f', function()
     telescope.find_files({ find_command = {'rg', '--files', '--hidden', '--iglob', '!.git' }})
   end, {noremap = true, silent = true, desc = "Open file picker"})
@@ -202,5 +203,19 @@ local function map(mode, lhs, rhs, desc, opts)
     vim.keymap.set(mode, lhs, rhs, opts)
 end
 ]]--
+
+-- ╔═══════════════════════════╗
+-- ║  Inlay Hints              ║
+-- ╚═══════════════════════════╝
+function M.inlay_hint()
+  local map = function(keys, func, desc)
+    vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
+  end
+  map('<Leader>lI', function()
+    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+  end, 'Toggle Inlay Hints')
+  --vim.lsp.inlay_hint.enable(true)
+end
+
 
 return M

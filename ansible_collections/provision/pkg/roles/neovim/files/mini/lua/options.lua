@@ -120,7 +120,7 @@ vim.api.nvim_create_autocmd('FileType', {
 
 -- Diagnostics ================================================================
 local diagnostic_opts = {
-  float = { border = 'double' },
+  float = { border = 'single' },
   -- Show gutter sings
   signs = {
     -- With highest priority
