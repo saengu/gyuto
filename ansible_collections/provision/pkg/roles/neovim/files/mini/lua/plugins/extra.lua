@@ -39,7 +39,7 @@ now(function()
       callback = function(args)
         local bufnr = args.buf
         local client = vim.lsp.get_client_by_id(args.data.client_id)
-        --client.server_capabilities.completionProvider.triggerCharacters = { '.', ':' }
+        client.server_capabilities.completionProvider.triggerCharacters = { '.', ':' }
 
         if client.server_capabilities.completionProvider then
           vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"

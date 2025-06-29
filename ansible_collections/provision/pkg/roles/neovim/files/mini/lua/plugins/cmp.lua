@@ -10,6 +10,8 @@ later(function()
   -- Use NeoVim native snippet engine
   local cmp = require('cmp')
   cmp.setup({
+    preselect = cmp.PreselectMode.Item,
+    confirmation = { completeopt = 'menu,menuone,noinsert,fuzzy,preview' },
     snippet = {
       expand = function(args)
         vim.snippet.expand(args.body)

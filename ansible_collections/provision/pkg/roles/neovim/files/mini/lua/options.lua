@@ -83,10 +83,12 @@ vim.opt.iskeyword:append('-')
 -- item'
 vim.o.formatlistpat = [[^\s*[0-9\-\+\*]\+[\.\)]*\s\+]]
 
-vim.o.completeopt = 'menuone,noselect' -- Show popup even with one item and don't autoselect first
+--[[
+vim.o.completeopt = 'menuone,noinsert' -- Show popup even with one item and don't autoselect first
 if vim.fn.has('nvim-0.11') == 1 then
-  vim.o.completeopt = 'menuone,noselect,fuzzy' -- Use fuzzy matching for built-in completion
+  vim.o.completeopt = 'menuone,noinsert,fuzzy' -- Use fuzzy matching for built-in completion
 end
+--]]
 
 -- Spelling ===================================================================
 vim.o.spelllang    = 'en,uk'       -- Define spelling dictionaries
@@ -116,6 +118,17 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.cmd('setlocal formatoptions-=c formatoptions-=o')
   end,
   desc = [[Ensure proper 'formatoptions']],
+})
+
+-- Remove trailing whitespace
+-- From: https://vi.stackexchange.com/questions/37421/how-to-remove-neovim-trailing-white-space
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+    pattern = {"*"},
+    callback = function()
+      local save_cursor = vim.fn.getpos(".")
+      pcall(function() vim.cmd [[%s/\s\+$//e]] end)
+      vim.fn.setpos(".", save_cursor)
+    end,
 })
 
 -- Diagnostics ================================================================
