@@ -274,4 +274,17 @@ later(function()
       },
     },
   })
+
+  --[[
+  vim.keymap.set("n", "]n", function()
+    local t = require("nvim-treesitter.ts_utils")
+    t.goto_node(t.get_next_node(t.get_node_at_cursor(), true, true), false, true)
+  end)
+
+  vim.keymap.set("n", "[n", function()
+    local t = require("nvim-treesitter.ts_utils")
+    t.goto_node(t.get_previous_node(t.get_node_at_cursor(), true, true), false, true)
+  end)
+  --]]
+
 end)

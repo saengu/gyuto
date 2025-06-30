@@ -20,6 +20,11 @@ keymap('n', '<Leader>T', telescope.builtin, {noremap = true, silent = true, desc
 keymap('n', '<Leader>t', telescope.treesitter, {noremap = true, silent = true, desc = "Open tree-sitter picker"})
 keymap("i", "<C-S-v>",   "<C-r><C-o>*",  { desc = 'Paste from system in insert mode' })
 
+-- Moving block
+-- Borrowed from https://medium.com/unixification/must-have-neovim-keymaps-51c283394070
+keymap("v", "J", ":m '>+1<CR>gv=gv")
+keymap("v", "K", ":m '<-2<CR>gv=gv")
+
 -- ╔═══════════════════════╗
 -- ║    Plugin  Keymaps    ║
 -- ╚═══════════════════════╝

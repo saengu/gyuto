@@ -87,7 +87,7 @@ later(function()
             { mode = 'n', keys = "\\" },      -- mini.basics
 
             -- Mini Bracketed
-            { mode = 'n', keys = '[' },        -- mini.bracketed
+            { mode = 'n', keys = '[' },       -- mini.bracketed
             { mode = 'n', keys = ']' },
             { mode = 'x', keys = '[' },
             { mode = 'x', keys = ']' },
